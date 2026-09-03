@@ -5,23 +5,15 @@
 
 ---
 
-## 🚀 Live Demo / Web Browser Access
+## 🚀 Live Demo
 
-You can host this project on **GitHub Pages** for free in seconds:
+Experience the live app here:  
+👉 **[https://adithya-techh.github.io/image_-converter_pro/](https://adithya-techh.github.io/image_-converter_pro/)**
 
-1. Push this repository to GitHub:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit - Image Converter Pro"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/<your-repo-name>.git
-   git push -u origin main
-   ```
-2. On GitHub, go to **Settings** > **Pages**.
-3. Under **Branch**, select `main` and root `/`, then click **Save**.
-4. Your website will be live at:
-   `https://<your-username>.github.io/<your-repo-name>/`
+---
+
+## 👨‍💻 Created by
+**Adithya** ([@adithya-techh](https://github.com/adithya-techh))
 
 ---
 

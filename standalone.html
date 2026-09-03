@@ -251,8 +251,36 @@ input[type=number]::placeholder{color:var(--txf)}
 .pab{flex:1;padding:11px;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .2s}
 .pab:hover{opacity:.85}
 .pab.pri{background:linear-gradient(135deg,var(--brand),#7c3aed);color:#fff}
-.pab.sec{background:rgba(255,255,255,.07);border:1px solid var(--bdr);color:var(--txm)}
 .spin{display:inline-block;animation:sp 1s linear infinite}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   FOOTER (Created by Adithya)
+══════════════════════════════════════════════════════════════════════════════ */
+.app-footer{
+  margin-top:5rem;padding:3rem 1.5rem 4rem;border-top:1px solid var(--bdr);
+  text-align:center;position:relative;z-index:2;
+  background:linear-gradient(to bottom,transparent,rgba(5,5,21,.75));
+}
+.footer-content{max-width:600px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:12px}
+.footer-badge{
+  display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.04);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.11);
+  padding:8px 22px;border-radius:999px;font-size:13px;color:var(--tx);letter-spacing:.02em;
+  box-shadow:0 4px 20px rgba(0,0,0,.28);transition:all .3s ease;
+}
+.footer-badge:hover{
+  border-color:rgba(91,114,255,.45);box-shadow:0 0 25px rgba(91,114,255,.25);transform:translateY(-1px);
+}
+.sparkle{color:var(--brandl);font-size:13px;display:inline-block;animation:spinSlow 7s linear infinite}
+@keyframes spinSlow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.author-gradient{
+  font-weight:800;
+  background:linear-gradient(135deg,#818cf8 0%,#c084fc 50%,#f472b6 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.footer-sub{font-size:12px;color:var(--txm)}
+.footer-link{font-size:12px;color:var(--brandl);text-decoration:none;opacity:.85;transition:all .2s}
+.footer-link:hover{opacity:1;color:#fff;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -375,6 +403,20 @@ input[type=number]::placeholder{color:var(--txf)}
       </div>
     </div>
   </section>
+
+  <!-- ══════════════ FOOTER (Created by Adithya) ══════════════ -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <div class="footer-badge">
+        <span class="sparkle">✦</span>
+        <span>Created by <strong class="author-gradient">Adithya</strong></span>
+      </div>
+      <p class="footer-sub">Interactive 3D Image Converter Pro · 100% Client-Side &amp; Private</p>
+      <a href="https://github.com/adithya-techh" target="_blank" rel="noopener noreferrer" class="footer-link">
+        github.com/adithya-techh
+      </a>
+    </div>
+  </footer>
 </div>
 
 <!-- Hidden file input -->
