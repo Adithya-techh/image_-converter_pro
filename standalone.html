@@ -452,10 +452,13 @@ input[type=number]::placeholder{color:var(--txf)}
   </div>
 </div>
 
-<!-- ── Offline Vendor Libraries (Local bundled for Chrome Extension & Web) ── -->
+<!-- ── Vendor Libraries (Local bundled with CDN fallback) ─────────────────── -->
 <script src="lib/three.min.js"></script>
+<script>if(typeof THREE==='undefined')document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"><\/script>');</script>
 <script src="lib/jszip.min.js"></script>
+<script>if(typeof JSZip==='undefined')document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"><\/script>');</script>
 <script src="lib/heic2any.min.js"></script>
+<script>if(typeof heic2any==='undefined')document.write('<script src="https://unpkg.com/heic2any@0.0.4/dist/heic2any.js"><\/script>');</script>
 
 <!-- ── App (plain script — works from file:// with no restrictions) ─────────── -->
 <script>
