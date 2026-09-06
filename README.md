@@ -43,13 +43,16 @@ No server, npm, or installation required:
 ## ✨ Features
 
 - 🌐 **Interactive 3D Three.js Background** — Real-time particle neural-network with mouse parallax effects.
+- ✂️ **Interactive Photo Cropper** — Freeform, 1:1 (Square), 4:3, 16:9, 9:16 (Story/Reel), and 3:2 DSLR presets with drag & resize handles.
+- 📄 **Images to PDF Compiler** — Batch merge photos into multi-page PDF documents with customizable page size (A4, Letter, Fit), orientation, and margins.
+- 🎬 **Client-Side Video Trimmer** — Interactive visual timeline scrubber, precision timestamp slicing, and direct zero-server export via MediaRecorder.
 - 🍎 **Apple HEIC/HEIF Conversion** — Convert iPhone HEIC/HEIF photos right in the browser.
 - ⚡ **Batch Processing** — Convert multiple images simultaneously.
 - 📦 **One-Click ZIP Export** — Download all converted files together as a single ZIP archive.
 - 📐 **Smart Resizing** — Choose between `Contain`, `Cover` (center crop), and `Fill`.
 - 🔄 **Transformations** — Rotate 90°, 180°, 270°, or flip horizontally and vertically.
 - 🎨 **Visual Filters** — Apply grayscale or 3×3 unsharp-mask sharpen.
-- 🔒 **100% Private & Secure** — No files are uploaded to any server. All processing runs locally via the HTML5 Canvas API and JavaScript.
+- 🔒 **100% Private & Secure** — No files are uploaded to any server. All processing runs locally via the HTML5 Canvas, MediaRecorder, and JavaScript binary APIs.
 
 ---
 

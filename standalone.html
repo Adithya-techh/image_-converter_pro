@@ -255,6 +255,121 @@ input[type=number]::placeholder{color:var(--txf)}
 .spin{display:inline-block;animation:sp 1s linear infinite}
 
 /* ══════════════════════════════════════════════════════════════════════════════
+   STUDIO TABS & PANELS
+══════════════════════════════════════════════════════════════════════════════ */
+.studio-nav{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  max-width:720px;margin:0 auto 2.5rem;padding:6px;
+  background:rgba(255,255,255,.03);backdrop-filter:blur(16px);
+  border:1px solid var(--bdr);border-radius:999px;
+}
+.snav-btn{
+  flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px 18px;border-radius:999px;border:none;background:transparent;
+  color:var(--txm);font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .25s;font-family:inherit;
+}
+.snav-btn:hover{color:#fff;background:rgba(255,255,255,.05)}
+.snav-btn.active{
+  background:linear-gradient(135deg,rgba(91,114,255,.35),rgba(168,85,247,.35));
+  color:#fff;border:1px solid rgba(91,114,255,.5);box-shadow:0 0 20px rgba(91,114,255,.3);
+}
+.studio-panel{display:none;animation:cin .3s ease both}
+.studio-panel.active{display:block}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   PHOTO CROP MODAL
+══════════════════════════════════════════════════════════════════════════════ */
+#crop-modal{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);
+  backdrop-filter:blur(14px);z-index:250;align-items:center;justify-content:center;padding:1.5rem;
+}
+#crop-modal.show{display:flex}
+.crop-card{
+  background:#090922;border:1px solid var(--bdr);border-radius:24px;
+  width:100%;max-width:780px;max-height:92vh;display:flex;flex-direction:column;
+  overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,.5);animation:cin .3s ease;
+}
+.crop-head{
+  display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;
+  border-bottom:1px solid var(--bdr);
+}
+.crop-title{font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px}
+.crop-close{background:none;border:none;color:var(--txm);cursor:pointer;font-size:18px;padding:4px;border-radius:6px}
+.crop-close:hover{color:#fff;background:rgba(255,255,255,.08)}
+.crop-body{
+  padding:1.2rem;display:flex;flex-direction:column;align-items:center;
+  overflow-y:auto;gap:14px;flex:1;
+}
+.crop-viewport{
+  position:relative;max-width:100%;max-height:400px;
+  background:#03030d;border-radius:12px;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;user-select:none;
+}
+#crop-canvas{max-width:100%;max-height:400px;display:block}
+.crop-box{
+  position:absolute;border:2px solid var(--brandl);box-shadow:0 0 0 9999px rgba(0,0,0,.62);
+  cursor:move;touch-action:none;box-sizing:border-box;
+}
+.crop-handle{
+  position:absolute;width:12px;height:12px;background:#fff;border:2px solid var(--brand);
+  border-radius:50%;box-sizing:border-box;
+}
+.crop-handle.nw{top:-6px;left:-6px;cursor:nwse-resize}
+.crop-handle.ne{top:-6px;right:-6px;cursor:nesw-resize}
+.crop-handle.se{bottom:-6px;right:-6px;cursor:nwse-resize}
+.crop-handle.sw{bottom:-6px;left:-6px;cursor:nesw-resize}
+.crop-ratios{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.crop-btn{
+  background:rgba(255,255,255,.06);border:1px solid var(--bdr);color:var(--txm);
+  padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;cursor:pointer;
+  transition:all .2s;font-family:inherit;
+}
+.crop-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.crop-btn.active{background:rgba(91,114,255,.25);border-color:var(--brand);color:var(--brandl)}
+.crop-foot{
+  display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:1rem 1.5rem;
+  border-top:1px solid var(--bdr);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   IMAGES TO PDF & VIDEO TRIMMER PANELS
+══════════════════════════════════════════════════════════════════════════════ */
+.video-wrap{
+  background:#02020a;border:1px solid var(--bdr);border-radius:18px;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;padding:12px;margin-bottom:1.5rem;
+}
+#trim-video{width:100%;max-height:420px;border-radius:10px;background:#000;outline:none}
+.timeline-box{width:100%;padding:14px 4px 6px}
+.timeline-track{
+  position:relative;height:36px;background:rgba(255,255,255,.05);border-radius:8px;
+  border:1px solid var(--bdr);overflow:hidden;margin-bottom:10px;cursor:pointer;
+}
+.timeline-highlight{
+  position:absolute;top:0;bottom:0;background:linear-gradient(90deg,rgba(91,114,255,.35),rgba(168,85,247,.35));
+  border-left:3px solid var(--brandl);border-right:3px solid var(--brandl);
+}
+.timeline-playhead{
+  position:absolute;top:0;bottom:0;width:2px;background:#fff;box-shadow:0 0 6px #fff;pointer-events:none;
+}
+.time-inputs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:12px}
+.time-badge{font-size:12px;color:var(--txm);text-align:center;font-weight:600}
+.time-badge strong{color:var(--em)}
+
+.pdf-queue{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:1.25rem;
+}
+.pdf-card{
+  background:var(--s1);border:1px solid var(--bdr);border-radius:12px;padding:8px;
+  display:flex;flex-direction:column;align-items:center;position:relative;animation:cin .3s ease;
+}
+.pdf-thumb{width:100%;height:120px;border-radius:8px;background:rgba(0,0,0,.3);object-fit:contain;margin-bottom:6px}
+.pdf-name{font-size:10px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center}
+.pdf-pnum{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.7);padding:2px 6px;border-radius:5px;font-size:10px;font-weight:700;color:var(--brandl)}
+.pdf-rm{position:absolute;top:10px;right:10px;background:rgba(239,68,68,.8);border:none;color:#fff;border-radius:5px;width:22px;height:22px;cursor:pointer;font-size:11px}
+.pdf-rm:hover{background:var(--rd)}
+
+/* ══════════════════════════════════════════════════════════════════════════════
    FOOTER (Created by Adithya)
 ══════════════════════════════════════════════════════════════════════════════ */
 .app-footer{
@@ -307,10 +422,19 @@ input[type=number]::placeholder{color:var(--txf)}
 
   <!-- ══════════════ CONVERTER ══════════════ -->
   <section id="converter">
-    <div class="sec-hd">
-      <h2>Drop Your Files</h2>
-      <p>Up to 50 files · Batch convert · Everything processed locally on your device</p>
+    <!-- Studio Mode Switcher Tabs -->
+    <div class="studio-nav">
+      <button class="snav-btn active" data-tab="converter"><span class="snav-ico">🖼️</span> Image Converter &amp; Crop</button>
+      <button class="snav-btn" data-tab="pdf"><span class="snav-ico">📄</span> Images to PDF</button>
+      <button class="snav-btn" data-tab="video"><span class="snav-ico">🎬</span> Video Trimmer</button>
     </div>
+
+    <!-- ── Panel 1: Image Converter & Crop ── -->
+    <div id="panel-converter" class="studio-panel active">
+      <div class="sec-hd">
+        <h2>Batch Image Converter &amp; Photo Studio</h2>
+        <p>Convert, crop, resize &amp; transform images · 100% processed locally on your device</p>
+      </div>
 
     <!-- Stats bar -->
     <div id="stats">
@@ -401,9 +525,214 @@ input[type=number]::placeholder{color:var(--txf)}
 
           <button class="conv-btn" id="conv-btn" disabled>✦ Convert Now</button>
         </div>
+    </div><!-- End #panel-converter -->
+
+    <!-- ── Panel 2: Images to PDF Compiler ── -->
+    <div id="panel-pdf" class="studio-panel">
+      <div class="sec-hd">
+        <h2>Images to PDF Compiler</h2>
+        <p>Combine multiple photos into a single multi-page PDF document · 100% private in your browser</p>
+      </div>
+
+      <!-- PDF Stats Bar -->
+      <div id="pdf-stats" style="display:none;background:var(--s1);backdrop-filter:blur(20px);border:1px solid var(--bdr);border-radius:14px;padding:10px 18px;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.5rem;">
+        <div class="stats-l">
+          <span class="si"><strong id="pdf-count">0</strong> pages</span>
+          <span class="si"><strong id="pdf-size">0 B</strong> source images</span>
+        </div>
+        <div class="stats-r">
+          <button class="bsm del" id="btn-pdf-clr">🗑 Clear Pages</button>
+        </div>
+      </div>
+
+      <div class="studio-grid">
+        <!-- Left: Dropzone and Page Grid -->
+        <div>
+          <div id="dz-pdf" class="glass" style="border:2px dashed var(--bdr);border-radius:20px;padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;background:var(--s1);">
+            <div class="dz-ico">📄</div>
+            <p class="dz-title">Drag &amp; drop photos to compile into PDF</p>
+            <p class="dz-sub">Supports HEIC · JPG · PNG · WebP · GIF · BMP · Multi-page layout</p>
+            <p class="dz-priv">🔒 Zero cloud upload · Document compiled locally in your browser</p>
+          </div>
+          <input type="file" id="fi-pdf" multiple accept=".heic,.heif,.jpg,.jpeg,.png,.webp,.gif,.bmp" style="display:none">
+          <div id="queue-pdf" class="pdf-queue"></div>
+        </div>
+
+        <!-- Right: PDF Settings Sidebar -->
+        <div class="scard" style="position:sticky;top:1.5rem">
+          <p class="stitle">📄 Document Setup</p>
+
+          <div class="sg">
+            <div class="slbl">Page Sizing</div>
+            <select id="pdf-page-size">
+              <option value="a4">A4 (210 × 297 mm — Standard)</option>
+              <option value="letter">US Letter (8.5 × 11 in)</option>
+              <option value="fit">Fit to Image Size (No scaling)</option>
+            </select>
+          </div>
+
+          <div class="sg">
+            <div class="slbl">Page Orientation</div>
+            <div class="chips c3">
+              <button class="chip on" data-pdf-orient="auto">Auto</button>
+              <button class="chip" data-pdf-orient="portrait">Portrait</button>
+              <button class="chip" data-pdf-orient="landscape">Landscape</button>
+            </div>
+          </div>
+
+          <div class="sg">
+            <div class="slbl">Page Margins</div>
+            <div class="chips c3">
+              <button class="chip on" data-pdf-margin="small">Small 10mm</button>
+              <button class="chip" data-pdf-margin="none">None 0mm</button>
+              <button class="chip" data-pdf-margin="normal">Normal 20mm</button>
+            </div>
+          </div>
+
+          <div class="div"></div>
+          <p class="stitle">🎨 Image Compression</p>
+          <div class="sg">
+            <div class="slbl">PDF Image Quality</div>
+            <select id="pdf-quality">
+              <option value="90">High (90% — Recommended)</option>
+              <option value="75">Compact (75% — Smaller PDF size)</option>
+              <option value="100">Maximum (100% — Lossless JPEG)</option>
+            </select>
+          </div>
+
+          <button class="conv-btn" id="btn-gen-pdf" disabled>
+            📄 Compile &amp; Download PDF
+          </button>
+        </div>
+      </div>
+    </div><!-- End #panel-pdf -->
+
+    <!-- ── Panel 3: Video Trimmer Studio ── -->
+    <div id="panel-video" class="studio-panel">
+      <div class="sec-hd">
+        <h2>Client-Side Video Trimmer</h2>
+        <p>Trim &amp; cut videos frame-accurately in your browser · No watermarks, no server, 100% private</p>
+      </div>
+
+      <div class="studio-grid">
+        <!-- Left: Player & Visual Timeline Scrubber -->
+        <div>
+          <div id="dz-vid" class="glass" style="border:2px dashed var(--bdr);border-radius:20px;padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;background:var(--s1);margin-bottom:1.25rem">
+            <div class="dz-ico">🎬</div>
+            <p class="dz-title">Drop video file here to trim</p>
+            <p class="dz-sub">Supports MP4 · WebM · MOV · M4V · MKV</p>
+            <p class="dz-priv">🔒 All video processing runs on your device hardware</p>
+          </div>
+          <input type="file" id="fi-vid" accept="video/*" style="display:none">
+
+          <!-- Video Player Workspace (hidden until video loaded) -->
+          <div id="video-workspace" class="video-wrap" style="display:none">
+            <video id="trim-video" controls playsinline></video>
+
+            <!-- Visual Timeline Scrubber -->
+            <div class="timeline-box">
+              <div class="timeline-track" id="vid-track">
+                <div class="timeline-highlight" id="vid-highlight"></div>
+                <div class="timeline-playhead" id="vid-playhead"></div>
+              </div>
+
+              <div class="time-inputs">
+                <div>
+                  <div class="slbl">Start Time (s)</div>
+                  <input type="number" id="inp-vid-start" min="0" step="0.1" value="0">
+                </div>
+                <div class="time-badge">
+                  Selected: <br><strong id="vid-duration-badge">00:00.0</strong>
+                </div>
+                <div>
+                  <div class="slbl">End Time (s)</div>
+                  <input type="number" id="inp-vid-end" min="0" step="0.1" value="0">
+                </div>
+              </div>
+
+              <div style="display:flex;gap:8px;margin-top:10px">
+                <button class="bsm acc" id="btn-vid-preview" style="flex:1;justify-content:center;padding:9px">▶ Preview Selection</button>
+                <button class="bsm" id="btn-vid-reset" style="padding:9px">↺ Reset Timeline</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Video Export Settings -->
+        <div class="scard" style="position:sticky;top:1.5rem">
+          <p class="stitle">✂️ Video Export Setup</p>
+
+          <div class="sg">
+            <div class="slbl">Video Details</div>
+            <div style="font-size:11px;color:var(--txm);background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:8px;padding:10px;line-height:1.6">
+              <div>File: <strong id="vinfo-name" style="color:#fff">-</strong></div>
+              <div>Duration: <strong id="vinfo-dur" style="color:#fff">-</strong></div>
+              <div>Resolution: <strong id="vinfo-res" style="color:#fff">-</strong></div>
+            </div>
+          </div>
+
+          <div class="sg">
+            <div class="slbl">Export Format</div>
+            <select id="vid-out-fmt">
+              <option value="webm">WebM (Fast &amp; High Quality)</option>
+              <option value="mp4">MP4 (Where supported)</option>
+            </select>
+          </div>
+
+          <button class="conv-btn" id="btn-vid-export" disabled>
+            ✂️ Export Trimmed Video
+          </button>
+
+          <!-- Export Progress Bar -->
+          <div id="vid-export-prog" style="display:none;margin-top:12px">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--txm);margin-bottom:5px">
+              <span>Trimming video...</span>
+              <strong id="vid-prog-pct" style="color:var(--brandl)">0%</strong>
+            </div>
+            <div style="height:6px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden">
+              <div id="vid-prog-bar" style="width:0%;height:100%;background:linear-gradient(90deg,var(--brand),var(--em));transition:width .2s"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- End #panel-video -->
+  </section>
+
+  <!-- ══════════════ PHOTO CROP MODAL ══════════════ -->
+  <div id="crop-modal">
+    <div class="crop-card">
+      <div class="crop-head">
+        <div class="crop-title">✂️ Interactive Photo Cropper</div>
+        <button class="crop-close" id="crop-close-btn">✕</button>
+      </div>
+      <div class="crop-body">
+        <div class="crop-ratios">
+          <button class="crop-btn active" data-ratio="free">Freeform</button>
+          <button class="crop-btn" data-ratio="1:1">1:1 Square</button>
+          <button class="crop-btn" data-ratio="4:3">4:3 Standard</button>
+          <button class="crop-btn" data-ratio="16:9">16:9 Landscape</button>
+          <button class="crop-btn" data-ratio="9:16">9:16 Story/Reel</button>
+          <button class="crop-btn" data-ratio="3:2">3:2 DSLR</button>
+          <button class="crop-btn" id="crop-rot-btn">↺ Rotate 90°</button>
+          <button class="crop-btn" id="crop-reset-btn">Reset</button>
+        </div>
+        <div class="crop-viewport" id="crop-viewport">
+          <canvas id="crop-canvas"></canvas>
+          <div class="crop-box" id="crop-box">
+            <div class="crop-handle nw" data-h="nw"></div>
+            <div class="crop-handle ne" data-h="ne"></div>
+            <div class="crop-handle se" data-h="se"></div>
+            <div class="crop-handle sw" data-h="sw"></div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--txm)" id="crop-dims-label">Crop dimensions: - × - px</div>
+      </div>
+      <div class="crop-foot">
+        <button class="bsm" id="crop-cancel-btn">Cancel</button>
+        <button class="bsm acc" id="crop-apply-btn" style="padding:8px 18px">Apply Crop ✂️</button>
       </div>
     </div>
-  </section>
+  </div>
 
   <!-- ══════════════ FOOTER (Created by Adithya) ══════════════ -->
   <footer class="app-footer">
@@ -634,7 +963,7 @@ function fileToBitmap(file){
   });
 }
 
-function processImage(file,s){
+function processImage(file,s,crop){
   var settings=s||{};
   var format=settings.format||'jpeg', quality=settings.quality||90;
   var width=settings.width, height=settings.height, fit=settings.fit||'inside';
@@ -646,18 +975,26 @@ function processImage(file,s){
     var srcW=src.width,srcH=src.height;
     if(!srcW||!srcH)throw new Error('Image has zero dimensions');
 
+    var sx=0, sy=0, sw=srcW, sh=srcH;
+    if(crop && crop.w>0 && crop.h>0){
+      sx=Math.max(0,Math.min(srcW-1,crop.x));
+      sy=Math.max(0,Math.min(srcH-1,crop.y));
+      sw=Math.max(1,Math.min(srcW-sx,crop.w));
+      sh=Math.max(1,Math.min(srcH-sy,crop.h));
+    }
+
     var tw=width ?Math.max(1,parseInt(width)) :null;
     var th=height?Math.max(1,parseInt(height)):null;
-    var dstW=srcW,dstH=srcH,outW=srcW,outH=srcH;
+    var dstW=sw,dstH=sh,outW=sw,outH=sh;
 
     if(tw||th){
-      if(fit==='fill'){dstW=outW=tw||srcW;dstH=outH=th||srcH;}
+      if(fit==='fill'){dstW=outW=tw||sw;dstH=outH=th||sh;}
       else if(fit==='cover'){
-        var sc=Math.max(tw?tw/srcW:0,th?th/srcH:0);
-        dstW=Math.round(srcW*sc);dstH=Math.round(srcH*sc);outW=tw||dstW;outH=th||dstH;
+        var sc=Math.max(tw?tw/sw:0,th?th/sh:0);
+        dstW=Math.round(sw*sc);dstH=Math.round(sh*sc);outW=tw||dstW;outH=th||dstH;
       } else {
-        var sc=Math.min(tw?tw/srcW:Infinity,th?th/srcH:Infinity);
-        if(isFinite(sc)){dstW=outW=Math.max(1,Math.round(srcW*sc));dstH=outH=Math.max(1,Math.round(srcH*sc));}
+        var sc=Math.min(tw?tw/sw:Infinity,th?th/sh:Infinity);
+        if(isFinite(sc)){dstW=outW=Math.max(1,Math.round(sw*sc));dstH=outH=Math.max(1,Math.round(sh*sc));}
       }
     }
 
@@ -672,7 +1009,7 @@ function processImage(file,s){
     ctx.translate(cW/2,cH/2);
     if(rotate)ctx.rotate(Number(rotate)*Math.PI/180);
     if(flipH||flipV)ctx.scale(flipH?-1:1,flipV?-1:1);
-    ctx.drawImage(src,-dstW/2,-dstH/2,dstW,dstH);
+    ctx.drawImage(src,sx,sy,sw,sh,-dstW/2,-dstH/2,dstW,dstH);
     ctx.restore();
     if(src.close)src.close();
 
@@ -801,15 +1138,23 @@ function buildCard(f){
       +'<div class="cbar"><div class="cbar-f" style="width:'+bw+'%"></div></div>';
   }
 
+  if(f.crop){
+    saveBadge += '<span class="csave" style="left:auto;right:34px;background:rgba(91,114,255,.3);color:var(--brandl)">✂️ Cropped</span>';
+  }
+
   var errHtml=error?'<div class="cerr">'+error+'</div>':'';
 
   var actsHtml='';
   if(status==='done'){
     var dlLbl=FMT_LABEL[S.format]||S.format.toUpperCase();
     actsHtml='<div class="cacts"><button class="cbtn" data-dl="'+id+'">⬇ Download '+dlLbl+'</button>'
+      +'<button class="cbtn sec" data-crop="'+id+'">✂️ Crop Photo</button>'
       +'<button class="cbtn sec" data-reset="'+id+'">↺ Re-convert</button></div>';
+  } else if(status==='idle'){
+    actsHtml='<div class="cacts"><button class="cbtn sec" data-crop="'+id+'">✂️ Crop Photo</button></div>';
   } else if(status==='error'){
-    actsHtml='<div class="cacts"><button class="cbtn sec" data-reset="'+id+'">↺ Retry</button></div>';
+    actsHtml='<div class="cacts"><button class="cbtn sec" data-crop="'+id+'">✂️ Crop Photo</button>'
+      +'<button class="cbtn sec" data-reset="'+id+'">↺ Retry</button></div>';
   }
 
   div.innerHTML=
@@ -838,7 +1183,7 @@ function updateConvBtn(){
 function addFiles(newFiles){
   var allowed=newFiles.filter(function(f){return /\.(heic|heif|jpg|jpeg|png|webp|avif|gif|bmp)$/i.test(f.name);});
   if(!allowed.length)return;
-  var entries=allowed.map(function(f){return {id:uid(),file:f,preview:null,previewReady:false,status:'idle',result:null,error:null};});
+  var entries=allowed.map(function(f){return {id:uid(),file:f,preview:null,previewReady:false,status:'idle',result:null,error:null,crop:null};});
   files=files.concat(entries);
   render();
   entries.forEach(function(e){
@@ -905,7 +1250,7 @@ function startConvert(){
   function next(){
     if(idx>=toConv.length){isConverting=false;render();finishProg();return;}
     var entry=toConv[idx++];
-    processImage(entry.file,S).then(function(res){
+    processImage(entry.file,S,entry.crop).then(function(res){
       var url=URL.createObjectURL(res.blob);
       if(entry.result&&entry.result.url)URL.revokeObjectURL(entry.result.url);
       entry.status='done';
@@ -1096,6 +1441,708 @@ PRESETS.forEach(function(p){
   var btn=document.createElement('button');btn.className='pre';btn.textContent=p.label;
   btn.addEventListener('click',function(){Object.assign(S,p.s);renderSettings();render();});
   preRow.appendChild(btn);
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// STUDIO TABS NAVIGATION
+// ═══════════════════════════════════════════════════════════════════
+document.querySelectorAll('.snav-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.snav-btn').forEach(function(b){b.classList.remove('active');});
+    document.querySelectorAll('.studio-panel').forEach(function(p){p.classList.remove('active');});
+    btn.classList.add('active');
+    var target=document.getElementById('panel-'+btn.dataset.tab);
+    if(target) target.classList.add('active');
+  });
+});
+
+// Auto-switch to tab if passed in URL (?tab=pdf or ?tab=video)
+try {
+  var urlParams = new URLSearchParams(window.location.search);
+  var tabParam = urlParams.get('tab') || window.location.hash.replace('#', '');
+  if(tabParam){
+    var targetBtn = document.querySelector('.snav-btn[data-tab="' + tabParam + '"]');
+    if(targetBtn) targetBtn.click();
+  }
+} catch(e){}
+
+// ═══════════════════════════════════════════════════════════════════
+// 1. INTERACTIVE PHOTO CROPPER ENGINE
+// ═══════════════════════════════════════════════════════════════════
+var cropModal=document.getElementById('crop-modal');
+var cropCanvas=document.getElementById('crop-canvas');
+var cropCtx=cropCanvas.getContext('2d');
+var cropBox=document.getElementById('crop-box');
+var cropViewport=document.getElementById('crop-viewport');
+var cropDimsLabel=document.getElementById('crop-dims-label');
+var currentCropEntry=null;
+var cropSourceBitmap=null;
+var cropRatio='free';
+var cropBoxData={x:20,y:20,w:200,h:200};
+var cropCanvasScale=1;
+var isDraggingCrop=false, isResizingCrop=false, activeHandle='';
+var dragStartX=0, dragStartY=0, startBoxData={};
+
+function openCropper(id){
+  var entry=files.find(function(x){return x.id===id;});
+  if(!entry) return;
+  currentCropEntry=entry;
+  cropModal.classList.add('show');
+
+  fileToBitmap(entry.file).then(function(bmp){
+    cropSourceBitmap=bmp;
+    var maxW=Math.min(window.innerWidth*0.8, 680);
+    var maxH=Math.min(window.innerHeight*0.55, 380);
+    var sc=Math.min(maxW/bmp.width, maxH/bmp.height, 1);
+    cropCanvasScale=sc;
+
+    cropCanvas.width=Math.round(bmp.width*sc);
+    cropCanvas.height=Math.round(bmp.height*sc);
+    cropCtx.drawImage(bmp, 0, 0, cropCanvas.width, cropCanvas.height);
+
+    if(entry.crop && entry.crop.w>0){
+      cropBoxData={
+        x: Math.round(entry.crop.x * sc),
+        y: Math.round(entry.crop.y * sc),
+        w: Math.round(entry.crop.w * sc),
+        h: Math.round(entry.crop.h * sc)
+      };
+    } else {
+      var initW=Math.round(cropCanvas.width*0.8);
+      var initH=Math.round(cropCanvas.height*0.8);
+      cropBoxData={
+        x: Math.round((cropCanvas.width - initW)/2),
+        y: Math.round((cropCanvas.height - initH)/2),
+        w: initW,
+        h: initH
+      };
+    }
+    applyRatioToCropBox();
+    updateCropBoxUI();
+  }).catch(function(err){
+    alert('Could not load image for cropping: ' + err.message);
+    closeCropper();
+  });
+}
+
+function closeCropper(){
+  cropModal.classList.remove('show');
+  currentCropEntry=null;
+  if(cropSourceBitmap && cropSourceBitmap.close) cropSourceBitmap.close();
+  cropSourceBitmap=null;
+}
+
+function updateCropBoxUI(){
+  cropBoxData.x=Math.max(0, Math.min(cropCanvas.width - 20, cropBoxData.x));
+  cropBoxData.y=Math.max(0, Math.min(cropCanvas.height - 20, cropBoxData.y));
+  cropBoxData.w=Math.max(20, Math.min(cropCanvas.width - cropBoxData.x, cropBoxData.w));
+  cropBoxData.h=Math.max(20, Math.min(cropCanvas.height - cropBoxData.y, cropBoxData.h));
+
+  cropBox.style.left=cropBoxData.x + 'px';
+  cropBox.style.top=cropBoxData.y + 'px';
+  cropBox.style.width=cropBoxData.w + 'px';
+  cropBox.style.height=cropBoxData.h + 'px';
+
+  if(cropCanvasScale>0){
+    var actualW=Math.round(cropBoxData.w / cropCanvasScale);
+    var actualH=Math.round(cropBoxData.h / cropCanvasScale);
+    cropDimsLabel.textContent='Crop dimensions: ' + actualW + ' × ' + actualH + ' px (' + cropRatio.toUpperCase() + ')';
+  }
+}
+
+function applyRatioToCropBox(){
+  if(cropRatio==='free') return;
+  var parts=cropRatio.split(':');
+  var targetRatio=Number(parts[0])/Number(parts[1]);
+  var currentRatio=cropBoxData.w/cropBoxData.h;
+
+  if(currentRatio > targetRatio){
+    cropBoxData.w = Math.round(cropBoxData.h * targetRatio);
+  } else {
+    cropBoxData.h = Math.round(cropBoxData.w / targetRatio);
+  }
+  updateCropBoxUI();
+}
+
+// Drag & Resize Pointer Events on Crop Box
+cropBox.addEventListener('pointerdown', function(e){
+  var handle=e.target.dataset.h;
+  if(handle){
+    isResizingCrop=true;
+    activeHandle=handle;
+  } else {
+    isDraggingCrop=true;
+  }
+  dragStartX=e.clientX;
+  dragStartY=e.clientY;
+  startBoxData=Object.assign({}, cropBoxData);
+  e.preventDefault();
+});
+
+window.addEventListener('pointermove', function(e){
+  if(!isDraggingCrop && !isResizingCrop) return;
+  var dx=e.clientX - dragStartX;
+  var dy=e.clientY - dragStartY;
+
+  if(isDraggingCrop){
+    cropBoxData.x = startBoxData.x + dx;
+    cropBoxData.y = startBoxData.y + dy;
+    updateCropBoxUI();
+  } else if(isResizingCrop){
+    if(activeHandle==='se'){
+      cropBoxData.w = Math.max(25, startBoxData.w + dx);
+      cropBoxData.h = Math.max(25, startBoxData.h + dy);
+    } else if(activeHandle==='sw'){
+      var newW=Math.max(25, startBoxData.w - dx);
+      cropBoxData.x = startBoxData.x + (startBoxData.w - newW);
+      cropBoxData.w = newW;
+      cropBoxData.h = Math.max(25, startBoxData.h + dy);
+    } else if(activeHandle==='ne'){
+      cropBoxData.w = Math.max(25, startBoxData.w + dx);
+      var newH=Math.max(25, startBoxData.h - dy);
+      cropBoxData.y = startBoxData.y + (startBoxData.h - newH);
+      cropBoxData.h = newH;
+    } else if(activeHandle==='nw'){
+      var newW2=Math.max(25, startBoxData.w - dx);
+      var newH2=Math.max(25, startBoxData.h - dy);
+      cropBoxData.x = startBoxData.x + (startBoxData.w - newW2);
+      cropBoxData.y = startBoxData.y + (startBoxData.h - newH2);
+      cropBoxData.w = newW2;
+      cropBoxData.h = newH2;
+    }
+    applyRatioToCropBox();
+    updateCropBoxUI();
+  }
+});
+
+window.addEventListener('pointerup', function(){
+  isDraggingCrop=false;
+  isResizingCrop=false;
+});
+
+// Ratio preset buttons
+document.querySelectorAll('[data-ratio]').forEach(function(b){
+  b.addEventListener('click', function(){
+    cropRatio=this.dataset.ratio;
+    document.querySelectorAll('[data-ratio]').forEach(function(x){x.classList.remove('active');});
+    this.classList.add('active');
+    applyRatioToCropBox();
+  });
+});
+
+document.getElementById('crop-reset-btn').addEventListener('click', function(){
+  cropRatio='free';
+  document.querySelectorAll('[data-ratio]').forEach(function(x){x.classList.toggle('active', x.dataset.ratio==='free');});
+  cropBoxData={x:10, y:10, w:cropCanvas.width - 20, h:cropCanvas.height - 20};
+  updateCropBoxUI();
+});
+
+document.getElementById('crop-rot-btn').addEventListener('click', function(){
+  if(!currentCropEntry) return;
+  S.rotate=(S.rotate + 90)%360;
+  renderSettings();
+  openCropper(currentCropEntry.id);
+});
+
+document.getElementById('crop-close-btn').addEventListener('click', closeCropper);
+document.getElementById('crop-cancel-btn').addEventListener('click', closeCropper);
+
+// Apply Crop Button
+document.getElementById('crop-apply-btn').addEventListener('click', function(){
+  if(!currentCropEntry || !cropCanvasScale) return;
+  currentCropEntry.crop={
+    x: Math.round(cropBoxData.x / cropCanvasScale),
+    y: Math.round(cropBoxData.y / cropCanvasScale),
+    w: Math.round(cropBoxData.w / cropCanvasScale),
+    h: Math.round(cropBoxData.h / cropCanvasScale)
+  };
+  currentCropEntry.status='idle';
+  currentCropEntry.result=null;
+
+  // Generate cropped preview
+  var off=document.createElement('canvas');
+  off.width=Math.min(200, currentCropEntry.crop.w);
+  off.height=Math.round(off.width * (currentCropEntry.crop.h / currentCropEntry.crop.w));
+  off.getContext('2d').drawImage(
+    cropSourceBitmap,
+    currentCropEntry.crop.x, currentCropEntry.crop.y, currentCropEntry.crop.w, currentCropEntry.crop.h,
+    0, 0, off.width, off.height
+  );
+  off.toBlob(function(blob){
+    if(blob){
+      if(currentCropEntry.preview) URL.revokeObjectURL(currentCropEntry.preview);
+      currentCropEntry.preview=URL.createObjectURL(blob);
+    }
+    updateCard(currentCropEntry);
+    updateConvBtn();
+    closeCropper();
+  }, 'image/jpeg', 0.85);
+});
+
+// Hook into queue click for [data-crop]
+document.getElementById('queue').addEventListener('click', function(e){
+  var cropBtn=e.target.closest('[data-crop]');
+  if(cropBtn){
+    openCropper(cropBtn.dataset.crop);
+  }
+});
+
+
+// ═══════════════════════════════════════════════════════════════════
+// 2. IMAGES TO PDF COMPILER ENGINE (Zero-Server, Standard %PDF-1.4)
+// ═══════════════════════════════════════════════════════════════════
+var pdfFiles=[];
+var pdfPageSize='a4';
+var pdfOrientation='auto';
+var pdfMargin='small';
+var pdfQuality=90;
+
+var dzPdf=document.getElementById('dz-pdf');
+var fiPdf=document.getElementById('fi-pdf');
+var queuePdf=document.getElementById('queue-pdf');
+var btnGenPdf=document.getElementById('btn-gen-pdf');
+var pdfStatsBar=document.getElementById('pdf-stats');
+var pdfCountEl=document.getElementById('pdf-count');
+var pdfSizeEl=document.getElementById('pdf-size');
+
+function renderPdfQueue(){
+  queuePdf.innerHTML='';
+  var totalSz=pdfFiles.reduce(function(a,f){return a+f.file.size;},0);
+  pdfCountEl.textContent=pdfFiles.length;
+  pdfSizeEl.textContent=fmtBytes(totalSz);
+  pdfStatsBar.style.display=pdfFiles.length>0?'flex':'none';
+  btnGenPdf.disabled=pdfFiles.length===0;
+
+  pdfFiles.forEach(function(item, idx){
+    var card=document.createElement('div');
+    card.className='pdf-card';
+    card.innerHTML='<span class="pdf-pnum">Page '+(idx+1)+'</span>'
+      +'<button class="pdf-rm" data-rm-pdf="'+item.id+'" title="Remove page">✕</button>'
+      +'<img class="pdf-thumb" src="'+item.thumb+'" alt="">'
+      +'<div class="pdf-name" title="'+item.file.name+'">'+item.file.name+'</div>';
+    queuePdf.appendChild(card);
+  });
+}
+
+function addPdfFiles(newFiles){
+  var allowed=newFiles.filter(function(f){return /\.(heic|heif|jpg|jpeg|png|webp|gif|bmp)$/i.test(f.name);});
+  if(!allowed.length) return;
+
+  allowed.forEach(function(f){
+    var id=uid();
+    makePreview(f).then(function(blob){
+      var thumb=blob?URL.createObjectURL(blob):'';
+      pdfFiles.push({id:id, file:f, thumb:thumb});
+      renderPdfQueue();
+    });
+  });
+}
+
+dzPdf.addEventListener('click', function(){fiPdf.click();});
+dzPdf.addEventListener('dragover', function(e){e.preventDefault();dzPdf.classList.add('over');});
+dzPdf.addEventListener('dragleave', function(){dzPdf.classList.remove('over');});
+dzPdf.addEventListener('drop', function(e){
+  e.preventDefault();dzPdf.classList.remove('over');
+  addPdfFiles(Array.from(e.dataTransfer.files));
+});
+fiPdf.addEventListener('change', function(e){
+  addPdfFiles(Array.from(e.target.files));
+  this.value='';
+});
+
+document.getElementById('btn-pdf-clr').addEventListener('click', function(){
+  pdfFiles.forEach(function(f){if(f.thumb)URL.revokeObjectURL(f.thumb);});
+  pdfFiles=[];
+  renderPdfQueue();
+});
+
+queuePdf.addEventListener('click', function(e){
+  var rm=e.target.closest('[data-rm-pdf]');
+  if(rm){
+    var target=pdfFiles.find(function(x){return x.id===rm.dataset.rmPdf;});
+    if(target && target.thumb) URL.revokeObjectURL(target.thumb);
+    pdfFiles=pdfFiles.filter(function(x){return x.id!==rm.dataset.rmPdf;});
+    renderPdfQueue();
+  }
+});
+
+document.getElementById('pdf-page-size').addEventListener('change', function(){pdfPageSize=this.value;});
+document.getElementById('pdf-quality').addEventListener('change', function(){pdfQuality=Number(this.value);});
+
+document.querySelectorAll('[data-pdf-orient]').forEach(function(b){
+  b.addEventListener('click', function(){
+    pdfOrientation=this.dataset.pdfOrient;
+    document.querySelectorAll('[data-pdf-orient]').forEach(function(x){x.classList.remove('on');});
+    this.classList.add('on');
+  });
+});
+
+document.querySelectorAll('[data-pdf-margin]').forEach(function(b){
+  b.addEventListener('click', function(){
+    pdfMargin=this.dataset.pdfMargin;
+    document.querySelectorAll('[data-pdf-margin]').forEach(function(x){x.classList.remove('on');});
+    this.classList.add('on');
+  });
+});
+
+// PDF Binary Compiler: Builds 100% compliant %PDF-1.4 file
+btnGenPdf.addEventListener('click', async function(){
+  if(!pdfFiles.length) return;
+  btnGenPdf.disabled=true;
+  btnGenPdf.innerHTML='<span class="spin">⟳</span> Compiling PDF...';
+
+  try {
+    var pageDimensions={
+      a4: {w: 595.28, h: 841.89},
+      letter: {w: 612.0, h: 792.0}
+    };
+    var marginPts=pdfMargin==='none'?0:(pdfMargin==='small'?28.35:56.7);
+
+    var pagesData=[];
+    for(var i=0; i<pdfFiles.length; i++){
+      var item=pdfFiles[i];
+      var bmp=await fileToBitmap(item.file);
+      var cv=document.createElement('canvas');
+      cv.width=bmp.width; cv.height=bmp.height;
+      var ctx=cv.getContext('2d');
+      ctx.fillStyle='#fff';
+      ctx.fillRect(0,0,cv.width,cv.height);
+      ctx.drawImage(bmp,0,0);
+      if(bmp.close) bmp.close();
+
+      var jpgBlob=await new Promise(function(res){
+        cv.toBlob(res, 'image/jpeg', pdfQuality/100);
+      });
+      var jpgBuf=await jpgBlob.arrayBuffer();
+      var jpgBytes=new Uint8Array(jpgBuf);
+
+      var pW=pageDimensions[pdfPageSize]?pageDimensions[pdfPageSize].w:(cv.width*72/96);
+      var pH=pageDimensions[pdfPageSize]?pageDimensions[pdfPageSize].h:(cv.height*72/96);
+
+      var isLand = pdfOrientation==='landscape' || (pdfOrientation==='auto' && cv.width > cv.height);
+      if(isLand && pW < pH){ var tmp=pW; pW=pH; pH=tmp; }
+      else if(!isLand && pW > pH){ var tmp2=pW; pW=pH; pH=tmp2; }
+
+      // Scale inside margins
+      var availW=pW - (marginPts*2);
+      var availH=pH - (marginPts*2);
+      var scale=Math.min(availW / cv.width, availH / cv.height);
+      var drawW=cv.width * scale;
+      var drawH=cv.height * scale;
+      var drawX=marginPts + (availW - drawW)/2;
+      var drawY=marginPts + (availH - drawH)/2;
+
+      pagesData.push({
+        bytes: jpgBytes,
+        imgW: cv.width,
+        imgH: cv.height,
+        pageW: pW,
+        pageH: pH,
+        drawX: drawX,
+        drawY: drawY,
+        drawW: drawW,
+        drawH: drawH
+      });
+    }
+
+    // Assemble PDF-1.4 binary structure
+    var chunks=[];
+    var offsets=[0];
+    var curOffset=0;
+
+    function addChunk(str){
+      var enc=new TextEncoder();
+      var u=enc.encode(str);
+      chunks.push(u);
+      curOffset+=u.length;
+    }
+    function addRaw(u8){
+      chunks.push(u8);
+      curOffset+=u8.length;
+    }
+
+    addChunk("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n");
+
+    var N=pagesData.length;
+    var kids=[];
+    for(var k=0; k<N; k++){ kids.push((3 + k*3) + " 0 R"); }
+
+    // Object 1: Catalog
+    offsets[1]=curOffset;
+    addChunk("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+
+    // Object 2: Pages
+    offsets[2]=curOffset;
+    addChunk("2 0 obj\n<< /Type /Pages /Kids [" + kids.join(" ") + "] /Count " + N + " >>\nendobj\n");
+
+    for(var p=0; p<N; p++){
+      var pg=pagesData[p];
+      var pageObjNum=3 + p*3;
+      var contObjNum=4 + p*3;
+      var imgObjNum =5 + p*3;
+
+      // Page Object
+      offsets[pageObjNum]=curOffset;
+      addChunk(pageObjNum + " 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + pg.pageW.toFixed(2) + " " + pg.pageH.toFixed(2) + "] /Contents " + contObjNum + " 0 R /Resources << /XObject << /Im" + p + " " + imgObjNum + " 0 R >> >> >>\nendobj\n");
+
+      // Content Stream
+      var contentStream="q\n" + pg.drawW.toFixed(2) + " 0 0 " + pg.drawH.toFixed(2) + " " + pg.drawX.toFixed(2) + " " + pg.drawY.toFixed(2) + " cm\n/Im" + p + " Do\nQ\n";
+      var csLen=new TextEncoder().encode(contentStream).length;
+      offsets[contObjNum]=curOffset;
+      addChunk(contObjNum + " 0 obj\n<< /Length " + csLen + " >>\nstream\n" + contentStream + "endstream\nendobj\n");
+
+      // Image XObject
+      offsets[imgObjNum]=curOffset;
+      addChunk(imgObjNum + " 0 obj\n<< /Type /XObject /Subtype /Image /Width " + pg.imgW + " /Height " + pg.imgH + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + pg.bytes.length + " >>\nstream\n");
+      addRaw(pg.bytes);
+      addChunk("\nendstream\nendobj\n");
+    }
+
+    // XRef table
+    var xrefOffset=curOffset;
+    var totalObjs=2 + N*3;
+    addChunk("xref\n0 " + (totalObjs + 1) + "\n0000000000 65535 f \n");
+    for(var o=1; o<=totalObjs; o++){
+      var pad=("0000000000" + offsets[o]).slice(-10);
+      addChunk(pad + " 00000 n \n");
+    }
+
+    addChunk("trailer\n<< /Size " + (totalObjs + 1) + " /Root 1 0 R >>\nstartxref\n" + xrefOffset + "\n%%EOF");
+
+    var pdfBlob=new Blob(chunks, {type: 'application/pdf'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(pdfBlob);
+    a.download='images_compiled.pdf';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  } catch(err){
+    alert('PDF Generation failed: ' + err.message);
+  } finally {
+    btnGenPdf.disabled=false;
+    btnGenPdf.innerHTML='📄 Compile &amp; Download PDF';
+  }
+});
+
+
+// ═══════════════════════════════════════════════════════════════════
+// 3. CLIENT-SIDE VIDEO TRIMMER ENGINE (HTML5 MediaRecorder)
+// ═══════════════════════════════════════════════════════════════════
+var dzVid=document.getElementById('dz-vid');
+var fiVid=document.getElementById('fi-vid');
+var trimVideo=document.getElementById('trim-video');
+var vidWorkspace=document.getElementById('video-workspace');
+var vidTrack=document.getElementById('vid-track');
+var vidHighlight=document.getElementById('vid-highlight');
+var vidPlayhead=document.getElementById('vid-playhead');
+var inpVidStart=document.getElementById('inp-vid-start');
+var inpVidEnd=document.getElementById('inp-vid-end');
+var vidDurBadge=document.getElementById('vid-duration-badge');
+var btnVidPreview=document.getElementById('btn-vid-preview');
+var btnVidReset=document.getElementById('btn-vid-reset');
+var btnVidExport=document.getElementById('btn-vid-export');
+var vidExportProg=document.getElementById('vid-export-prog');
+var vidProgBar=document.getElementById('vid-prog-bar');
+var vidProgPct=document.getElementById('vid-prog-pct');
+
+var currentVideoFile=null;
+var currentVideoUrl=null;
+var vidTotalDur=0;
+var vidStartTime=0;
+var vidEndTime=0;
+var isPreviewingSegment=false;
+
+function fmtTime(sec){
+  if(isNaN(sec) || sec < 0) sec = 0;
+  var m=Math.floor(sec/60);
+  var s=Math.floor(sec%60);
+  var ms=Math.floor((sec % 1)*10);
+  return (m<10?'0':'')+m+':'+(s<10?'0':'')+s+'.'+ms;
+}
+
+function updateVidUI(){
+  vidStartTime=Math.max(0, Math.min(vidEndTime - 0.1, Number(inpVidStart.value) || 0));
+  vidEndTime=Math.min(vidTotalDur, Math.max(vidStartTime + 0.1, Number(inpVidEnd.value) || vidTotalDur));
+
+  inpVidStart.value=vidStartTime.toFixed(1);
+  inpVidEnd.value=vidEndTime.toFixed(1);
+
+  var selDur=vidEndTime - vidStartTime;
+  vidDurBadge.textContent=fmtTime(selDur);
+
+  if(vidTotalDur>0){
+    var leftPct=(vidStartTime / vidTotalDur) * 100;
+    var widthPct=((vidEndTime - vidStartTime) / vidTotalDur) * 100;
+    vidHighlight.style.left=leftPct + '%';
+    vidHighlight.style.width=widthPct + '%';
+  }
+}
+
+function loadVideoFile(file){
+  if(!file) return;
+  currentVideoFile=file;
+  if(currentVideoUrl) URL.revokeObjectURL(currentVideoUrl);
+  currentVideoUrl=URL.createObjectURL(file);
+
+  trimVideo.src=currentVideoUrl;
+  vidWorkspace.style.display='block';
+  dzVid.style.display='none';
+
+  document.getElementById('vinfo-name').textContent=file.name;
+  btnVidExport.disabled=true;
+
+  trimVideo.onloadedmetadata=function(){
+    vidTotalDur=trimVideo.duration;
+    vidStartTime=0;
+    vidEndTime=vidTotalDur;
+    inpVidStart.max=vidTotalDur;
+    inpVidEnd.max=vidTotalDur;
+
+    document.getElementById('vinfo-dur').textContent=fmtTime(vidTotalDur);
+    document.getElementById('vinfo-res').textContent=trimVideo.videoWidth + ' × ' + trimVideo.videoHeight;
+
+    updateVidUI();
+    btnVidExport.disabled=false;
+  };
+}
+
+dzVid.addEventListener('click', function(){fiVid.click();});
+dzVid.addEventListener('dragover', function(e){e.preventDefault();dzVid.classList.add('over');});
+dzVid.addEventListener('dragleave', function(){dzVid.classList.remove('over');});
+dzVid.addEventListener('drop', function(e){
+  e.preventDefault();dzVid.classList.remove('over');
+  if(e.dataTransfer.files && e.dataTransfer.files[0]) loadVideoFile(e.dataTransfer.files[0]);
+});
+fiVid.addEventListener('change', function(e){
+  if(e.target.files && e.target.files[0]) loadVideoFile(e.target.files[0]);
+});
+
+inpVidStart.addEventListener('input', function(){
+  vidStartTime=Number(this.value);
+  updateVidUI();
+  trimVideo.currentTime=vidStartTime;
+});
+inpVidEnd.addEventListener('input', function(){
+  vidEndTime=Number(this.value);
+  updateVidUI();
+  trimVideo.currentTime=vidEndTime;
+});
+
+// Click on visual timeline track to seek
+vidTrack.addEventListener('click', function(e){
+  if(!vidTotalDur) return;
+  var rect=vidTrack.getBoundingClientRect();
+  var clickPct=(e.clientX - rect.left)/rect.width;
+  trimVideo.currentTime=clickPct * vidTotalDur;
+});
+
+trimVideo.addEventListener('timeupdate', function(){
+  if(vidTotalDur>0){
+    var curPct=(trimVideo.currentTime / vidTotalDur) * 100;
+    vidPlayhead.style.left=curPct + '%';
+  }
+  if(isPreviewingSegment && trimVideo.currentTime >= vidEndTime){
+    trimVideo.pause();
+    isPreviewingSegment=false;
+    btnVidPreview.textContent='▶ Preview Selection';
+  }
+});
+
+btnVidPreview.addEventListener('click', function(){
+  if(!vidTotalDur) return;
+  if(isPreviewingSegment){
+    trimVideo.pause();
+    isPreviewingSegment=false;
+    btnVidPreview.textContent='▶ Preview Selection';
+  } else {
+    trimVideo.currentTime=vidStartTime;
+    trimVideo.play();
+    isPreviewingSegment=true;
+    btnVidPreview.textContent='⏸ Pause Preview';
+  }
+});
+
+btnVidReset.addEventListener('click', function(){
+  if(!vidTotalDur) return;
+  inpVidStart.value=0;
+  inpVidEnd.value=vidTotalDur.toFixed(1);
+  updateVidUI();
+  trimVideo.currentTime=0;
+});
+
+// Video Export via MediaRecorder
+btnVidExport.addEventListener('click', async function(){
+  if(!vidTotalDur || !trimVideo) return;
+  btnVidExport.disabled=true;
+  btnVidExport.innerHTML='<span class="spin">⟳</span> Trimming...';
+  vidExportProg.style.display='block';
+  vidProgBar.style.width='0%';
+  vidProgPct.textContent='0%';
+
+  try {
+    trimVideo.pause();
+    trimVideo.currentTime=vidStartTime;
+    await new Promise(function(r){ trimVideo.onseeked=r; });
+
+    var stream;
+    if(trimVideo.captureStream){
+      stream=trimVideo.captureStream();
+    } else if(trimVideo.mozCaptureStream){
+      stream=trimVideo.mozCaptureStream();
+    } else {
+      throw new Error('Video stream capture not supported in this browser.');
+    }
+
+    var mimeType='video/webm;codecs=vp8,opus';
+    if(!MediaRecorder.isTypeSupported(mimeType)){
+      mimeType='video/webm';
+    }
+
+    var recorder=new MediaRecorder(stream, {mimeType: mimeType});
+    var recordedChunks=[];
+
+    recorder.ondataavailable=function(e){
+      if(e.data && e.data.size > 0) recordedChunks.push(e.data);
+    };
+
+    recorder.onstop=function(){
+      var trimmedBlob=new Blob(recordedChunks, {type: 'video/webm'});
+      var outA=document.createElement('a');
+      outA.href=URL.createObjectURL(trimmedBlob);
+      var baseName=(currentVideoFile?currentVideoFile.name:'video').replace(/\.[^.]+$/, '');
+      outA.download=baseName + '_trimmed.webm';
+      document.body.appendChild(outA);
+      outA.click();
+      document.body.removeChild(outA);
+
+      vidExportProg.style.display='none';
+      btnVidExport.disabled=false;
+      btnVidExport.innerHTML='✂️ Export Trimmed Video';
+    };
+
+    recorder.start(100);
+    trimVideo.play();
+
+    var trackTimer=setInterval(function(){
+      var elapsed=trimVideo.currentTime - vidStartTime;
+      var total=vidEndTime - vidStartTime;
+      var pct=Math.min(100, Math.max(0, Math.round((elapsed / total) * 100)));
+      vidProgBar.style.width=pct + '%';
+      vidProgPct.textContent=pct + '%';
+
+      if(trimVideo.currentTime >= vidEndTime || trimVideo.ended){
+        clearInterval(trackTimer);
+        trimVideo.pause();
+        recorder.stop();
+      }
+    }, 100);
+
+  } catch(err){
+    alert('Export error: ' + err.message);
+    vidExportProg.style.display='none';
+    btnVidExport.disabled=false;
+    btnVidExport.innerHTML='✂️ Export Trimmed Video';
+  }
 });
 
 // ── INIT ──

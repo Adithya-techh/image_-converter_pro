@@ -375,14 +375,19 @@ queueEl.addEventListener('click', function (e) {
   if (dl) { downloadOne(dl.dataset.dl); return; }
 });
 
-// "Expand to Full Tab" button: opens index.html in a new tab
-btnExpandTab.addEventListener('click', function () {
+function openStudioTab(tab) {
+  var url = 'index.html' + (tab ? '?tab=' + tab : '');
   if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.create) {
-    chrome.tabs.create({ url: chrome.runtime.getURL('index.html') });
+    chrome.tabs.create({ url: chrome.runtime.getURL(url) });
   } else {
-    window.open('index.html', '_blank');
+    window.open(url, '_blank');
   }
-});
+}
+
+btnExpandTab.addEventListener('click', function () { openStudioTab(''); });
+document.getElementById('pop-tab-conv').addEventListener('click', function () { openStudioTab('converter'); });
+document.getElementById('pop-tab-pdf').addEventListener('click', function () { openStudioTab('pdf'); });
+document.getElementById('pop-tab-vid').addEventListener('click', function () { openStudioTab('video'); });
 
 render();
 
