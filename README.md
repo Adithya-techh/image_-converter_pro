@@ -17,10 +17,26 @@ Experience the live app here:
 
 ---
 
-## 💻 Offline & Local Usage
+## 🧩 Use as a Google Chrome Extension
 
-No server or npm is required:
-- Simply double-click **`index.html`** to open it in Chrome, Edge, Brave, or Firefox.
+You can load this repository directly into Google Chrome as an extension:
+
+1. Open Google Chrome and navigate to:
+   `chrome://extensions`
+2. Enable **Developer mode** using the toggle in the top-right corner.
+3. Click the **Load unpacked** button in the top-left corner.
+4. Select the project folder:
+   `C:\Develop\image_ converter_pro`
+5. The **Image Converter Pro** icon will appear in your Chrome toolbar!
+   - Click the toolbar icon anytime to convert images in a sleek popup window.
+   - Click **"Expand to Full Tab ↗"** inside the popup to launch the full 3D interactive experience.
+
+---
+
+## 💻 Offline & Local Web Usage
+
+No server, npm, or installation required:
+- Simply double-click **`index.html`** to open it directly in any browser.
 
 ---
 
