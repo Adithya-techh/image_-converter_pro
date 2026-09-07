@@ -25,6 +25,7 @@
         "lib/three.min.js",
         "lib/jszip.min.js",
         "lib/heic2any.min.js",
+        "lib/jspdf.umd.min.js",
         "icons/*"
       ],
       "matches": ["<all_urls>"]
