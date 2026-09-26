@@ -108,8 +108,8 @@ body{background:var(--bg);color:var(--tx);font-family:'Inter',system-ui,sans-ser
 .bsm.del:hover{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:#fca5a5}
 
 /* ── Grid ─── */
-.cgrid{display:grid;grid-template-columns:1fr 318px;gap:1.5rem;align-items:start}
-@media(max-width:960px){.cgrid{grid-template-columns:1fr}}
+.cgrid, .studio-grid{display:grid;grid-template-columns:1fr 318px;gap:1.5rem;align-items:start}
+@media(max-width:960px){.cgrid, .studio-grid{grid-template-columns:1fr}}
 
 /* ── Drop zone ─── */
 #dz{
@@ -276,6 +276,31 @@ input[type=number]::placeholder{color:var(--txf)}
 }
 .studio-panel{display:none;animation:cin .3s ease both}
 .studio-panel.active{display:block}
+.dz-browse-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--brand),#7c3aed);
+  color:#fff;border:none;border-radius:10px;padding:11px 26px;
+  font-size:13px;font-weight:700;cursor:pointer;
+  box-shadow:0 4px 20px rgba(91,114,255,.35);transition:all .2s;
+  font-family:inherit;
+}
+.dz-browse-btn:hover{
+  transform:translateY(-2px);box-shadow:0 6px 26px rgba(91,114,255,.5);
+}
+.hero-studio-chips{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:1.4rem 0 1rem}
+.hero-chip{
+  display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;
+  background:rgba(255,255,255,.05);border:1px solid var(--bdr);color:var(--txm);
+  font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;
+}
+.hero-chip:hover,.hero-chip.active{
+  color:#fff;background:rgba(91,114,255,.2);border-color:rgba(91,114,255,.5);transform:translateY(-1px);
+  box-shadow:0 0 16px rgba(91,114,255,.25);
+}
+@media(max-width:640px){
+  .studio-nav{flex-direction:column;border-radius:18px;gap:6px;padding:8px}
+  .snav-btn{width:100%;border-radius:12px;padding:10px 14px;font-size:12px}
+}
 
 /* ══════════════════════════════════════════════════════════════════════════════
    PHOTO CROP MODAL
@@ -416,7 +441,12 @@ input[type=number]::placeholder{color:var(--txf)}
       <span class="pill webp">WebP</span><span class="pill avif">AVIF</span>
       <span class="pill bmp">GIF</span><span class="pill bmp">BMP</span>
     </div>
-    <button class="hero-cta" id="hero-cta">Start Converting <span class="cta-arr">↓</span></button>
+    <div class="hero-studio-chips">
+      <button class="hero-chip active" data-tab-switch="converter">🖼️ Image Converter &amp; Crop</button>
+      <button class="hero-chip" data-tab-switch="pdf">📄 Images to PDF</button>
+      <button class="hero-chip" data-tab-switch="video">🎬 Video Trimmer</button>
+    </div>
+    <button class="hero-cta" id="hero-cta">Open Studio Workspace <span class="cta-arr">↓</span></button>
     <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
   </section>
 
@@ -456,7 +486,10 @@ input[type=number]::placeholder{color:var(--txf)}
           <div class="dz-ico">🖼️</div>
           <p class="dz-title">Drag &amp; drop images here</p>
           <p class="dz-sub">or click to browse · HEIC · JPG · PNG · WebP · AVIF · GIF · BMP</p>
-          <p class="dz-priv">🔒 Files processed locally — nothing is uploaded</p>
+          <div style="margin-top:14px">
+            <button type="button" class="dz-browse-btn" id="btn-browse-images">📂 Choose Images to Convert</button>
+          </div>
+          <p class="dz-priv" style="margin-top:14px">🔒 Files processed locally — nothing is uploaded</p>
         </div>
         <div id="queue"></div>
       </div>
@@ -524,8 +557,10 @@ input[type=number]::placeholder{color:var(--txf)}
           <div class="trow"><span class="tlbl">Sharpen</span><button class="tog" id="tog-sharp"></button></div>
 
           <button class="conv-btn" id="conv-btn" disabled>✦ Convert Now</button>
-        </div>
-    </div><!-- End #panel-converter -->
+        </div><!-- End .scard -->
+      </div><!-- End #side -->
+    </div><!-- End .cgrid -->
+  </div><!-- End #panel-converter -->
 
     <!-- ── Panel 2: Images to PDF Compiler ── -->
     <div id="panel-pdf" class="studio-panel">
@@ -540,7 +575,8 @@ input[type=number]::placeholder{color:var(--txf)}
           <span class="si"><strong id="pdf-count">0</strong> pages</span>
           <span class="si"><strong id="pdf-size">0 B</strong> source images</span>
         </div>
-        <div class="stats-r">
+        <div class="stats-r" style="display:flex;gap:8px">
+          <button class="bsm acc" id="btn-pdf-add-more">➕ Add More Photos</button>
           <button class="bsm del" id="btn-pdf-clr">🗑 Clear Pages</button>
         </div>
       </div>
@@ -552,9 +588,12 @@ input[type=number]::placeholder{color:var(--txf)}
             <div class="dz-ico">📄</div>
             <p class="dz-title">Drag &amp; drop photos to compile into PDF</p>
             <p class="dz-sub">Supports HEIC · JPG · PNG · WebP · GIF · BMP · Multi-page layout</p>
-            <p class="dz-priv">🔒 Zero cloud upload · Document compiled locally in your browser</p>
+            <div style="margin-top:14px">
+              <button type="button" class="dz-browse-btn" id="btn-pdf-browse">📂 Select Photos for PDF</button>
+            </div>
+            <p class="dz-priv" style="margin-top:14px">🔒 Zero cloud upload · Document compiled locally in your browser</p>
           </div>
-          <input type="file" id="fi-pdf" multiple accept=".heic,.heif,.jpg,.jpeg,.png,.webp,.gif,.bmp" style="display:none">
+          <input type="file" id="fi-pdf" multiple accept="image/*,.heic,.heif,.jpg,.jpeg,.png,.webp,.gif,.bmp" style="display:none">
           <div id="queue-pdf" class="pdf-queue"></div>
         </div>
 
@@ -620,13 +659,20 @@ input[type=number]::placeholder{color:var(--txf)}
           <div id="dz-vid" class="glass" style="border:2px dashed var(--bdr);border-radius:20px;padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;background:var(--s1);margin-bottom:1.25rem">
             <div class="dz-ico">🎬</div>
             <p class="dz-title">Drop video file here to trim</p>
-            <p class="dz-sub">Supports MP4 · WebM · MOV · M4V · MKV</p>
-            <p class="dz-priv">🔒 All video processing runs on your device hardware</p>
+            <p class="dz-sub">Supports MP4 · WebM · MOV · M4V · MKV · AVI</p>
+            <div style="margin-top:14px">
+              <button type="button" class="dz-browse-btn" id="btn-vid-browse">🎬 Select Video to Trim</button>
+            </div>
+            <p class="dz-priv" style="margin-top:14px">🔒 All video processing runs on your device hardware</p>
           </div>
-          <input type="file" id="fi-vid" accept="video/*" style="display:none">
+          <input type="file" id="fi-vid" accept="video/*,.mp4,.webm,.mov,.m4v,.mkv,.avi" style="display:none">
 
           <!-- Video Player Workspace (hidden until video loaded) -->
           <div id="video-workspace" class="video-wrap" style="display:none">
+            <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:2px 4px">
+              <span style="font-size:12px;color:var(--txm);font-weight:600">Video Player &amp; Selection Track</span>
+              <button class="bsm" id="btn-vid-change" style="padding:6px 14px;font-size:11px">↺ Choose Another Video</button>
+            </div>
             <video id="trim-video" controls playsinline></video>
 
             <!-- Visual Timeline Scrubber -->
@@ -1362,6 +1408,8 @@ FI.addEventListener('change',function(e){addFiles(Array.from(e.target.files));th
 // Drop zone
 var DZ=document.getElementById('dz');
 DZ.addEventListener('click',function(){FI.click();});
+var btnBrowseImg=document.getElementById('btn-browse-images');
+if(btnBrowseImg){btnBrowseImg.addEventListener('click',function(e){e.stopPropagation();FI.click();});}
 DZ.addEventListener('dragover',function(e){e.preventDefault();DZ.classList.add('over');});
 DZ.addEventListener('dragleave',function(e){if(!e.relatedTarget||!e.relatedTarget.closest('#dz'))DZ.classList.remove('over');});
 DZ.addEventListener('drop',function(e){
@@ -1448,13 +1496,32 @@ PRESETS.forEach(function(p){
 // ═══════════════════════════════════════════════════════════════════
 // STUDIO TABS NAVIGATION
 // ═══════════════════════════════════════════════════════════════════
+function switchStudioTab(tabName, shouldScroll){
+  if(!tabName) return;
+  document.querySelectorAll('.snav-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.tab === tabName);
+  });
+  document.querySelectorAll('.studio-panel').forEach(function(p){
+    p.classList.toggle('active', p.id === 'panel-' + tabName);
+  });
+  document.querySelectorAll('[data-tab-switch]').forEach(function(c){
+    c.classList.toggle('active', c.dataset.tabSwitch === tabName);
+  });
+  if(shouldScroll){
+    var convSec = document.getElementById('converter');
+    if(convSec) convSec.scrollIntoView({behavior:'smooth'});
+  }
+}
+
 document.querySelectorAll('.snav-btn').forEach(function(btn){
-  btn.addEventListener('click',function(){
-    document.querySelectorAll('.snav-btn').forEach(function(b){b.classList.remove('active');});
-    document.querySelectorAll('.studio-panel').forEach(function(p){p.classList.remove('active');});
-    btn.classList.add('active');
-    var target=document.getElementById('panel-'+btn.dataset.tab);
-    if(target) target.classList.add('active');
+  btn.addEventListener('click', function(){
+    switchStudioTab(this.dataset.tab, false);
+  });
+});
+
+document.querySelectorAll('[data-tab-switch]').forEach(function(chip){
+  chip.addEventListener('click', function(){
+    switchStudioTab(this.dataset.tabSwitch, true);
   });
 });
 
@@ -1463,8 +1530,7 @@ try {
   var urlParams = new URLSearchParams(window.location.search);
   var tabParam = urlParams.get('tab') || window.location.hash.replace('#', '');
   if(tabParam){
-    var targetBtn = document.querySelector('.snav-btn[data-tab="' + tabParam + '"]');
-    if(targetBtn) targetBtn.click();
+    switchStudioTab(tabParam, false);
   }
 } catch(e){}
 
@@ -1727,8 +1793,14 @@ function renderPdfQueue(){
 }
 
 function addPdfFiles(newFiles){
-  var allowed=newFiles.filter(function(f){return /\.(heic|heif|jpg|jpeg|png|webp|gif|bmp)$/i.test(f.name);});
-  if(!allowed.length) return;
+  if(!newFiles || !newFiles.length) return;
+  var allowed=newFiles.filter(function(f){
+    return (f.type && f.type.startsWith('image/')) || /\.(heic|heif|jpg|jpeg|png|webp|avif|gif|bmp|tiff|tif)$/i.test(f.name);
+  });
+  if(!allowed.length){
+    alert('Please select valid image files (JPG, PNG, WebP, HEIC, GIF, BMP).');
+    return;
+  }
 
   allowed.forEach(function(f){
     var id=uid();
@@ -1750,6 +1822,10 @@ function addPdfFiles(newFiles){
 }
 
 dzPdf.addEventListener('click', function(){fiPdf.click();});
+var btnPdfBrowse=document.getElementById('btn-pdf-browse');
+if(btnPdfBrowse){btnPdfBrowse.addEventListener('click',function(e){e.stopPropagation();fiPdf.click();});}
+var btnPdfAddMore=document.getElementById('btn-pdf-add-more');
+if(btnPdfAddMore){btnPdfAddMore.addEventListener('click',function(e){e.stopPropagation();fiPdf.click();});}
 dzPdf.addEventListener('dragover', function(e){e.preventDefault();dzPdf.classList.add('over');});
 dzPdf.addEventListener('dragleave', function(){dzPdf.classList.remove('over');});
 dzPdf.addEventListener('drop', function(e){
@@ -1987,6 +2063,10 @@ function setupVideoLoaded(){
 
 function loadVideoFile(file){
   if(!file) return;
+  if(file.type && !file.type.startsWith('video/') && !/\.(mp4|webm|mov|m4v|mkv|avi|ogv)$/i.test(file.name)){
+    alert('Please select a valid video file (MP4, WebM, MOV, etc.).');
+    return;
+  }
   currentVideoFile = file;
   if(currentVideoUrl) URL.revokeObjectURL(currentVideoUrl);
   currentVideoUrl = URL.createObjectURL(file);
@@ -2019,6 +2099,11 @@ function loadVideoFile(file){
 }
 
 dzVid.addEventListener('click', function(){fiVid.click();});
+var btnVidBrowse = document.getElementById('btn-vid-browse');
+if(btnVidBrowse){btnVidBrowse.addEventListener('click', function(e){e.stopPropagation();fiVid.click();});}
+var btnVidChange = document.getElementById('btn-vid-change');
+if(btnVidChange){btnVidChange.addEventListener('click', function(e){e.stopPropagation();fiVid.click();});}
+
 dzVid.addEventListener('dragover', function(e){e.preventDefault();dzVid.classList.add('over');});
 dzVid.addEventListener('dragleave', function(){dzVid.classList.remove('over');});
 dzVid.addEventListener('drop', function(e){
@@ -2027,18 +2112,24 @@ dzVid.addEventListener('drop', function(e){
 });
 fiVid.addEventListener('change', function(e){
   if(e.target.files && e.target.files[0]) loadVideoFile(e.target.files[0]);
+  this.value = '';
 });
 
-inpVidStart.addEventListener('change', function(){
-  vidStartTime = Number(this.value) || 0;
+function handleVidStartInput(){
+  vidStartTime = Number(inpVidStart.value) || 0;
   updateVidUI();
   trimVideo.currentTime = vidStartTime;
-});
-inpVidEnd.addEventListener('change', function(){
-  vidEndTime = Number(this.value) || vidTotalDur;
+}
+function handleVidEndInput(){
+  vidEndTime = Number(inpVidEnd.value) || vidTotalDur;
   updateVidUI();
   trimVideo.currentTime = vidEndTime;
-});
+}
+
+inpVidStart.addEventListener('input', handleVidStartInput);
+inpVidStart.addEventListener('change', handleVidStartInput);
+inpVidEnd.addEventListener('input', handleVidEndInput);
+inpVidEnd.addEventListener('change', handleVidEndInput);
 
 // Click on visual timeline track to seek
 vidTrack.addEventListener('click', function(e){
