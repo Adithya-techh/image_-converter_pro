@@ -43,6 +43,7 @@ No server, npm, or installation required:
 ## ✨ Features
 
 - 🌐 **Interactive 3D Three.js Background** — Real-time particle neural-network with mouse parallax effects.
+- 🗜️ **Photo & Video Smart Compressor** — Shrink image and video file sizes by 50%–85% while preserving crisp, perceptually lossless quality with one-click presets and live savings metrics.
 - ✂️ **Interactive Photo Cropper** — Freeform, 1:1 (Square), 4:3, 16:9, 9:16 (Story/Reel), and 3:2 DSLR presets with drag & resize handles.
 - 📄 **Images to PDF Compiler** — Batch merge photos into multi-page PDF documents with customizable page size (A4, Letter, Fit), orientation, and margins.
 - 🎬 **Client-Side Video Trimmer** — Interactive visual timeline scrubber, precision timestamp slicing, and direct zero-server export via MediaRecorder.

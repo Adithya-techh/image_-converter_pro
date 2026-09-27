@@ -302,6 +302,17 @@ input[type=number]::placeholder{color:var(--txf)}
   .snav-btn{width:100%;border-radius:12px;padding:10px 14px;font-size:12px}
 }
 
+.comp-card{
+  background:var(--s1);border:1px solid var(--bdr);border-radius:14px;padding:12px 14px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;transition:all .2s;
+  animation:cin .3s ease;
+}
+.comp-card:hover{border-color:rgba(91,114,255,.4)}
+.comp-badge{
+  background:rgba(16,185,129,.18);color:#34d399;border:1px solid rgba(16,185,129,.35);
+  font-size:10px;font-weight:800;padding:2px 6px;border-radius:5px;display:inline-block;
+}
+
 /* ══════════════════════════════════════════════════════════════════════════════
    PHOTO CROP MODAL
 ══════════════════════════════════════════════════════════════════════════════ */
@@ -445,6 +456,7 @@ input[type=number]::placeholder{color:var(--txf)}
       <button class="hero-chip active" data-tab-switch="converter">🖼️ Image Converter &amp; Crop</button>
       <button class="hero-chip" data-tab-switch="pdf">📄 Images to PDF</button>
       <button class="hero-chip" data-tab-switch="video">🎬 Video Trimmer</button>
+      <button class="hero-chip" data-tab-switch="compress">🗜️ Compress Media</button>
     </div>
     <button class="hero-cta" id="hero-cta">Open Studio Workspace <span class="cta-arr">↓</span></button>
     <div class="scroll-hint"><div class="scroll-line"></div>Scroll</div>
@@ -457,6 +469,7 @@ input[type=number]::placeholder{color:var(--txf)}
       <button class="snav-btn active" data-tab="converter"><span class="snav-ico">🖼️</span> Image Converter &amp; Crop</button>
       <button class="snav-btn" data-tab="pdf"><span class="snav-ico">📄</span> Images to PDF</button>
       <button class="snav-btn" data-tab="video"><span class="snav-ico">🎬</span> Video Trimmer</button>
+      <button class="snav-btn" data-tab="compress"><span class="snav-ico">🗜️</span> Compress Photos &amp; Video</button>
     </div>
 
     <!-- ── Panel 1: Image Converter & Crop ── -->
@@ -742,6 +755,212 @@ input[type=number]::placeholder{color:var(--txf)}
         </div>
       </div>
     </div><!-- End #panel-video -->
+
+    <!-- ── Panel 4: Photo & Video Compressor Studio ── -->
+    <div id="panel-compress" class="studio-panel">
+      <div class="sec-hd">
+        <h2>Photo &amp; Video Smart Compressor</h2>
+        <p>Shrink file sizes by up to 80% while retaining crisp, high-definition visual quality · 100% private in your browser</p>
+      </div>
+
+      <!-- Compressor Mode Switcher (Photos vs Video) -->
+      <div style="display:flex;justify-content:center;gap:10px;margin-bottom:1.5rem">
+        <button class="chip on" id="comp-mode-photos" style="padding:8px 22px;font-size:13px">🖼️ Compress Photos</button>
+        <button class="chip" id="comp-mode-video" style="padding:8px 22px;font-size:13px">🎬 Compress Video</button>
+      </div>
+
+      <!-- ── Sub-view 1: Photo Compressor ── -->
+      <div id="comp-view-photos">
+        <!-- Photo Compression Stats Bar -->
+        <div id="comp-photo-stats" style="display:none;background:var(--s1);backdrop-filter:blur(20px);border:1px solid var(--bdr);border-radius:14px;padding:10px 18px;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.5rem;">
+          <div class="stats-l">
+            <span class="si"><strong id="comp-p-count">0</strong> photos</span>
+            <span class="si">Original: <strong id="comp-p-orig">0 B</strong></span>
+            <span class="si" id="comp-p-res-wrap" style="display:none">Compressed: <strong id="comp-p-comp" style="color:var(--em)">0 B</strong> (<span id="comp-p-pct" style="color:var(--em);font-weight:700">0%</span> saved)</span>
+          </div>
+          <div class="stats-r" style="display:flex;gap:8px">
+            <button class="bsm acc" id="btn-comp-p-add">➕ Add Photos</button>
+            <button class="bsm acc" id="btn-comp-p-zip" style="display:none">⬇ Download All ZIP</button>
+            <button class="bsm del" id="btn-comp-p-clr">🗑 Clear</button>
+          </div>
+        </div>
+
+        <div class="studio-grid">
+          <!-- Left: Dropzone and Compressed Cards -->
+          <div>
+            <div id="dz-comp-photo" class="glass" style="border:2px dashed var(--bdr);border-radius:20px;padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;background:var(--s1);">
+              <div class="dz-ico">🗜️</div>
+              <p class="dz-title">Drop photos here to reduce file size</p>
+              <p class="dz-sub">Supports HEIC · JPG · PNG · WebP · AVIF · GIF · BMP</p>
+              <div style="margin-top:14px">
+                <button type="button" class="dz-browse-btn" id="btn-comp-photo-browse">📂 Choose Photos to Compress</button>
+              </div>
+              <p class="dz-priv" style="margin-top:14px">🔒 Perceptually optimized local compression — no server upload</p>
+            </div>
+            <input type="file" id="fi-comp-photo" multiple accept="image/*,.heic,.heif,.jpg,.jpeg,.png,.webp,.gif,.bmp" style="display:none">
+            <div id="queue-comp-photo" class="comp-photo-queue" style="margin-top:1.25rem;display:flex;flex-direction:column;gap:10px"></div>
+          </div>
+
+          <!-- Right: Photo Compression Setup -->
+          <div class="scard" style="position:sticky;top:1.5rem">
+            <p class="stitle">🗜️ Compression Level</p>
+
+            <div class="sg">
+              <div class="slbl">Preset Strategy</div>
+              <div class="chips c2" style="margin-bottom:8px">
+                <button class="chip on" data-comp-preset="balanced">Smart Balanced</button>
+                <button class="chip" data-comp-preset="compact">Max Compact</button>
+              </div>
+              <div class="chips c2">
+                <button class="chip" data-comp-preset="lossless">High Quality</button>
+                <button class="chip" data-comp-preset="custom">Custom</button>
+              </div>
+            </div>
+
+            <div id="comp-custom-controls" style="display:none">
+              <div class="sg">
+                <div class="slbl">Image Quality <span id="comp-q-val" style="color:var(--brandl);font-weight:700">80%</span></div>
+                <input type="range" id="comp-q-rng" min="20" max="95" value="80">
+              </div>
+
+              <div class="sg">
+                <div class="slbl">Max Resolution Scale</div>
+                <div class="chips c3">
+                  <button class="chip on" data-comp-scale="1">100%</button>
+                  <button class="chip" data-comp-scale="0.8">80%</button>
+                  <button class="chip" data-comp-scale="0.5">50%</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sg">
+              <div class="slbl">Output Format</div>
+              <select id="comp-out-fmt">
+                <option value="auto">Smart Auto (WebP / JPEG — Best size)</option>
+                <option value="webp">WebP (Smallest file size)</option>
+                <option value="jpeg">JPG / JPEG (Universal)</option>
+                <option value="keep">Keep Original Format</option>
+              </select>
+            </div>
+
+            <button class="conv-btn" id="btn-comp-photo-run" disabled>
+              🗜️ Compress Photos Now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Sub-view 2: Video Compressor ── -->
+      <div id="comp-view-video" style="display:none">
+        <div class="studio-grid">
+          <!-- Left: Video Dropzone & Player -->
+          <div>
+            <div id="dz-comp-vid" class="glass" style="border:2px dashed var(--bdr);border-radius:20px;padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;background:var(--s1);margin-bottom:1.25rem">
+              <div class="dz-ico">🎬</div>
+              <p class="dz-title">Drop video here to reduce file size</p>
+              <p class="dz-sub">Supports MP4 · WebM · MOV · M4V · MKV · AVI</p>
+              <div style="margin-top:14px">
+                <button type="button" class="dz-browse-btn" id="btn-comp-vid-browse">🎬 Choose Video to Compress</button>
+              </div>
+              <p class="dz-priv" style="margin-top:14px">🔒 Hardware-accelerated client-side re-encoding</p>
+            </div>
+            <input type="file" id="fi-comp-vid" accept="video/*,.mp4,.webm,.mov,.m4v,.mkv,.avi" style="display:none">
+
+            <!-- Video Player Workspace -->
+            <div id="comp-vid-workspace" class="video-wrap" style="display:none">
+              <div style="width:100%;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding:2px 4px">
+                <span style="font-size:12px;color:var(--txm);font-weight:600">Source Video</span>
+                <button class="bsm" id="btn-comp-vid-change" style="padding:6px 14px;font-size:11px">↺ Choose Another Video</button>
+              </div>
+              <video id="comp-video" controls playsinline style="width:100%;max-height:360px;border-radius:10px;background:#000"></video>
+
+              <!-- Comparison banner once compressed -->
+              <div id="comp-vid-result-box" style="display:none;width:100%;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:12px;padding:12px 16px;margin-top:12px">
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+                  <div>
+                    <div style="font-size:11px;color:var(--txm)">Compression Result:</div>
+                    <div style="font-size:13px;font-weight:700;color:#fff">
+                      <span id="cv-orig-sz">0 MB</span> ➔ <span id="cv-new-sz" style="color:var(--em)">0 MB</span>
+                      <span id="cv-saved-badge" style="background:var(--em);color:#000;font-size:11px;padding:2px 6px;border-radius:4px;margin-left:6px;font-weight:800">-0%</span>
+                    </div>
+                  </div>
+                  <a id="btn-cv-dl" class="bsm acc" style="padding:8px 16px;text-decoration:none" download>⬇ Download Compressed Video</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Video Compression Settings -->
+          <div class="scard" style="position:sticky;top:1.5rem">
+            <p class="stitle">🗜️ Video Compression Setup</p>
+
+            <div class="sg">
+              <div class="slbl">Source Video Info</div>
+              <div style="font-size:11px;color:var(--txm);background:rgba(255,255,255,.03);border:1px solid var(--bdr);border-radius:8px;padding:10px;line-height:1.6">
+                <div>File: <strong id="cv-info-name" style="color:#fff">-</strong></div>
+                <div>Original Size: <strong id="cv-info-size" style="color:#fff">-</strong></div>
+                <div>Duration: <strong id="cv-info-dur" style="color:#fff">-</strong></div>
+                <div>Resolution: <strong id="cv-info-res" style="color:#fff">-</strong></div>
+              </div>
+            </div>
+
+            <div class="sg">
+              <div class="slbl">Target Quality &amp; Bitrate</div>
+              <select id="sel-comp-vid-preset">
+                <option value="balanced">Smart Balanced (720p HD · ~60-75% smaller)</option>
+                <option value="high">High Quality (1080p Full HD · ~40-50% smaller)</option>
+                <option value="social">Web &amp; WhatsApp / Discord (540p · ~80% smaller)</option>
+                <option value="custom">Custom Resolution &amp; Bitrate</option>
+              </select>
+            </div>
+
+            <div id="comp-vid-custom-grp" style="display:none">
+              <div class="sg">
+                <div class="slbl">Resolution Scale</div>
+                <select id="sel-comp-vid-res">
+                  <option value="1">Original Resolution</option>
+                  <option value="720">720p HD (1280 × 720)</option>
+                  <option value="540">540p qHD (960 × 540)</option>
+                  <option value="480">480p SD (854 × 480)</option>
+                </select>
+              </div>
+              <div class="sg">
+                <div class="slbl">Video Bitrate</div>
+                <select id="sel-comp-vid-bitrate">
+                  <option value="3000000">3.0 Mbps (High Bitrate)</option>
+                  <option value="1500000">1.5 Mbps (Balanced — Recommended)</option>
+                  <option value="900000">900 kbps (Compact)</option>
+                  <option value="500000">500 kbps (Maximum Compression)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="sg">
+              <div class="slbl">Export Format</div>
+              <select id="sel-comp-vid-fmt">
+                <option value="webm">WebM (Fast, high compression)</option>
+                <option value="mp4">MP4 (Where supported)</option>
+              </select>
+            </div>
+
+            <button class="conv-btn" id="btn-comp-vid-run" disabled>
+              🗜️ Compress Video Now
+            </button>
+
+            <!-- Video Compression Progress -->
+            <div id="comp-vid-prog" style="display:none;margin-top:12px">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--txm);margin-bottom:5px">
+                <span>Compressing video frames...</span>
+                <strong id="comp-vid-prog-pct" style="color:var(--brandl)">0%</strong>
+              </div>
+              <div style="height:6px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden">
+                <div id="comp-vid-prog-bar" style="width:0%;height:100%;background:linear-gradient(90deg,var(--brand),var(--em));transition:width .2s"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- End #panel-compress -->
   </section>
 
   <!-- ══════════════ PHOTO CROP MODAL ══════════════ -->
@@ -2364,6 +2583,812 @@ btnVidExport.addEventListener('click', async function(){
     cleanup();
   }
 });
+
+// ═══════════════════════════════════════════════════════════════════
+// 4. PHOTO & VIDEO COMPRESSOR ENGINE
+// ═══════════════════════════════════════════════════════════════════
+
+// Sub-mode tabs (Photos vs Video)
+var compModePhotosBtn = document.getElementById('comp-mode-photos');
+var compModeVideoBtn = document.getElementById('comp-mode-video');
+var compViewPhotos = document.getElementById('comp-view-photos');
+var compViewVideo = document.getElementById('comp-view-video');
+
+if (compModePhotosBtn && compModeVideoBtn) {
+  compModePhotosBtn.addEventListener('click', function () {
+    compModePhotosBtn.classList.add('on');
+    compModeVideoBtn.classList.remove('on');
+    if (compViewPhotos) compViewPhotos.style.display = 'block';
+    if (compViewVideo) compViewVideo.style.display = 'none';
+  });
+  compModeVideoBtn.addEventListener('click', function () {
+    compModeVideoBtn.classList.add('on');
+    compModePhotosBtn.classList.remove('on');
+    if (compViewPhotos) compViewPhotos.style.display = 'none';
+    if (compViewVideo) compViewVideo.style.display = 'block';
+  });
+}
+
+// ── Photo Compression Engine ──
+var dzCompPhoto = document.getElementById('dz-comp-photo');
+var fiCompPhoto = document.getElementById('fi-comp-photo');
+var btnCompPhotoBrowse = document.getElementById('btn-comp-photo-browse');
+var queueCompPhoto = document.getElementById('queue-comp-photo');
+var compPhotoStats = document.getElementById('comp-photo-stats');
+var compPCount = document.getElementById('comp-p-count');
+var compPOrig = document.getElementById('comp-p-orig');
+var compPResWrap = document.getElementById('comp-p-res-wrap');
+var compPComp = document.getElementById('comp-p-comp');
+var compPPct = document.getElementById('comp-p-pct');
+var btnCompPAdd = document.getElementById('btn-comp-p-add');
+var btnCompPZip = document.getElementById('btn-comp-p-zip');
+var btnCompPClr = document.getElementById('btn-comp-p-clr');
+var btnCompPhotoRun = document.getElementById('btn-comp-photo-run');
+var compCustomControls = document.getElementById('comp-custom-controls');
+var compQRng = document.getElementById('comp-q-rng');
+var compQVal = document.getElementById('comp-q-val');
+var compOutFmt = document.getElementById('comp-out-fmt');
+
+var compPhotoList = [];
+var compPhotoPreset = 'balanced';
+var compPhotoScale = 1;
+var isCompressingPhotos = false;
+
+// Preset buttons
+document.querySelectorAll('[data-comp-preset]').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('[data-comp-preset]').forEach(function (b) { b.classList.remove('on'); });
+    this.classList.add('on');
+    compPhotoPreset = this.dataset.compPreset;
+    if (compPhotoPreset === 'custom') {
+      if (compCustomControls) compCustomControls.style.display = 'block';
+    } else {
+      if (compCustomControls) compCustomControls.style.display = 'none';
+    }
+  });
+});
+
+// Custom quality range slider
+if (compQRng && compQVal) {
+  compQRng.addEventListener('input', function () {
+    compQVal.textContent = this.value + '%';
+  });
+}
+
+// Scale chips
+document.querySelectorAll('[data-comp-scale]').forEach(function (chip) {
+  chip.addEventListener('click', function () {
+    document.querySelectorAll('[data-comp-scale]').forEach(function (c) { c.classList.remove('on'); });
+    this.classList.add('on');
+    compPhotoScale = parseFloat(this.dataset.compScale) || 1;
+  });
+});
+
+// File picker / drag & drop triggers
+if (btnCompPhotoBrowse && fiCompPhoto) {
+  btnCompPhotoBrowse.addEventListener('click', function (e) {
+    e.stopPropagation();
+    fiCompPhoto.click();
+  });
+}
+if (dzCompPhoto && fiCompPhoto) {
+  dzCompPhoto.addEventListener('click', function () {
+    fiCompPhoto.click();
+  });
+  dzCompPhoto.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    this.style.borderColor = 'var(--brand)';
+  });
+  dzCompPhoto.addEventListener('dragleave', function () {
+    this.style.borderColor = 'var(--bdr)';
+  });
+  dzCompPhoto.addEventListener('drop', function (e) {
+    e.preventDefault();
+    this.style.borderColor = 'var(--bdr)';
+    if (e.dataTransfer && e.dataTransfer.files) {
+      addCompPhotos(e.dataTransfer.files);
+    }
+  });
+}
+if (btnCompPAdd && fiCompPhoto) {
+  btnCompPAdd.addEventListener('click', function () {
+    fiCompPhoto.click();
+  });
+}
+if (fiCompPhoto) {
+  fiCompPhoto.addEventListener('change', function () {
+    if (this.files && this.files.length) {
+      addCompPhotos(this.files);
+      this.value = '';
+    }
+  });
+}
+if (btnCompPClr) {
+  btnCompPClr.addEventListener('click', function () {
+    compPhotoList.forEach(function (p) {
+      if (p.thumbUrl) URL.revokeObjectURL(p.thumbUrl);
+      if (p.blobUrl) URL.revokeObjectURL(p.blobUrl);
+    });
+    compPhotoList = [];
+    renderCompPhotoUI();
+  });
+}
+
+function addCompPhotos(filesList) {
+  if (!filesList || !filesList.length) return;
+  for (var i = 0; i < filesList.length; i++) {
+    var f = filesList[i];
+    var thumbUrl = '';
+    try {
+      if (!isHeic(f.name)) {
+        thumbUrl = URL.createObjectURL(f);
+      }
+    } catch (e) {}
+    compPhotoList.push({
+      id: 'cp_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+      file: f,
+      name: f.name,
+      size: f.size,
+      status: 'pending',
+      thumbUrl: thumbUrl,
+      compressedBlob: null,
+      blobUrl: null,
+      compressedSize: 0,
+      savedPct: 0,
+      downloadName: '',
+      err: ''
+    });
+  }
+  renderCompPhotoUI();
+}
+
+function removeCompPhoto(id) {
+  var idx = compPhotoList.findIndex(function (p) { return p.id === id; });
+  if (idx !== -1) {
+    var item = compPhotoList[idx];
+    if (item.thumbUrl) URL.revokeObjectURL(item.thumbUrl);
+    if (item.blobUrl) URL.revokeObjectURL(item.blobUrl);
+    compPhotoList.splice(idx, 1);
+    renderCompPhotoUI();
+  }
+}
+
+function downloadCompPhoto(item) {
+  if (!item || !item.compressedBlob) return;
+  var a = document.createElement('a');
+  a.href = item.blobUrl || URL.createObjectURL(item.compressedBlob);
+  a.download = item.downloadName || 'compressed_image';
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function () {
+    document.body.removeChild(a);
+  }, 1000);
+}
+
+if (btnCompPZip) {
+  btnCompPZip.addEventListener('click', function () {
+    var doneItems = compPhotoList.filter(function (p) { return p.status === 'done' && p.compressedBlob; });
+    if (!doneItems.length) {
+      alert('No compressed photos available to download.');
+      return;
+    }
+    if (typeof JSZip === 'undefined') {
+      alert('JSZip library is still loading, please wait a moment...');
+      return;
+    }
+    var zip = new JSZip();
+    doneItems.forEach(function (p) {
+      zip.file(p.downloadName, p.compressedBlob);
+    });
+    btnCompPZip.disabled = true;
+    btnCompPZip.textContent = '⏳ Creating ZIP...';
+    zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } })
+      .then(function (zb) {
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(zb);
+        a.download = 'compressed_photos.zip';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(a.href);
+        }, 1500);
+      })
+      .catch(function (err) {
+        alert('Failed to create ZIP: ' + (err.message || err));
+      })
+      .finally(function () {
+        btnCompPZip.disabled = false;
+        btnCompPZip.textContent = '⬇ Download All ZIP';
+      });
+  });
+}
+
+function renderCompPhotoUI() {
+  if (!compPhotoStats || !queueCompPhoto || !btnCompPhotoRun) return;
+  var count = compPhotoList.length;
+  if (count === 0) {
+    compPhotoStats.style.display = 'none';
+    queueCompPhoto.innerHTML = '';
+    btnCompPhotoRun.disabled = true;
+    return;
+  }
+
+  compPhotoStats.style.display = 'flex';
+  compPCount.textContent = count;
+  var totalOrig = compPhotoList.reduce(function (sum, p) { return sum + p.size; }, 0);
+  compPOrig.textContent = fmtBytes(totalOrig);
+
+  var doneItems = compPhotoList.filter(function (p) { return p.status === 'done' && p.compressedBlob; });
+  if (doneItems.length > 0) {
+    var totalComp = 0;
+    var totalOrigDone = 0;
+    doneItems.forEach(function (p) {
+      totalComp += p.compressedSize;
+      totalOrigDone += p.size;
+    });
+    compPResWrap.style.display = 'inline';
+    compPComp.textContent = fmtBytes(totalComp);
+    var overallSaved = Math.max(0, Math.round(((totalOrigDone - totalComp) / totalOrigDone) * 100));
+    compPPct.textContent = overallSaved + '%';
+    if (btnCompPZip) btnCompPZip.style.display = 'inline-block';
+  } else {
+    compPResWrap.style.display = 'none';
+    if (btnCompPZip) btnCompPZip.style.display = 'none';
+  }
+
+  btnCompPhotoRun.disabled = isCompressingPhotos || !compPhotoList.some(function (p) {
+    return p.status === 'pending' || p.status === 'done';
+  });
+
+  queueCompPhoto.innerHTML = '';
+  compPhotoList.forEach(function (p) {
+    var card = document.createElement('div');
+    card.className = 'comp-card';
+
+    var leftDiv = document.createElement('div');
+    leftDiv.style.cssText = 'display:flex;align-items:center;gap:12px;overflow:hidden;flex:1;min-width:0';
+
+    var thumbEl;
+    if (p.thumbUrl) {
+      thumbEl = document.createElement('img');
+      thumbEl.src = p.thumbUrl;
+      thumbEl.style.cssText = 'width:44px;height:44px;object-fit:cover;border-radius:8px;background:#222;flex-shrink:0';
+    } else {
+      thumbEl = document.createElement('div');
+      thumbEl.textContent = '🖼️';
+      thumbEl.style.cssText = 'width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-size:22px;background:rgba(255,255,255,0.05);border-radius:8px;flex-shrink:0';
+    }
+    leftDiv.appendChild(thumbEl);
+
+    var infoDiv = document.createElement('div');
+    infoDiv.style.cssText = 'overflow:hidden;min-width:0';
+    var nameEl = document.createElement('div');
+    nameEl.textContent = p.name;
+    nameEl.style.cssText = 'font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--tx)';
+    var szEl = document.createElement('div');
+    szEl.style.cssText = 'font-size:11px;color:var(--txm);margin-top:2px';
+    szEl.textContent = fmtBytes(p.size);
+    infoDiv.appendChild(nameEl);
+    infoDiv.appendChild(szEl);
+    leftDiv.appendChild(infoDiv);
+    card.appendChild(leftDiv);
+
+    var rightDiv = document.createElement('div');
+    rightDiv.style.cssText = 'display:flex;align-items:center;gap:10px;flex-shrink:0';
+
+    if (p.status === 'pending') {
+      var badge = document.createElement('span');
+      badge.textContent = 'Ready';
+      badge.style.cssText = 'font-size:11px;color:var(--txm);background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:6px';
+      rightDiv.appendChild(badge);
+    } else if (p.status === 'compressing') {
+      var badge = document.createElement('span');
+      badge.innerHTML = '<span class="spin">⏳</span> Compressing...';
+      badge.style.cssText = 'font-size:11px;color:var(--brandl);font-weight:600';
+      rightDiv.appendChild(badge);
+    } else if (p.status === 'done') {
+      var resDiv = document.createElement('div');
+      resDiv.style.cssText = 'text-align:right';
+      var newSz = document.createElement('div');
+      newSz.style.cssText = 'font-size:12px;font-weight:700;color:var(--em)';
+      newSz.textContent = fmtBytes(p.compressedSize);
+      var pctBadge = document.createElement('span');
+      pctBadge.className = 'comp-badge';
+      pctBadge.textContent = '-' + p.savedPct + '%';
+      resDiv.appendChild(newSz);
+      resDiv.appendChild(pctBadge);
+      rightDiv.appendChild(resDiv);
+
+      var dlBtn = document.createElement('button');
+      dlBtn.className = 'bsm acc';
+      dlBtn.style.padding = '5px 12px';
+      dlBtn.textContent = '⬇ Download';
+      (function (itemRef) {
+        dlBtn.addEventListener('click', function () {
+          downloadCompPhoto(itemRef);
+        });
+      })(p);
+      rightDiv.appendChild(dlBtn);
+    } else if (p.status === 'error') {
+      var errSpan = document.createElement('span');
+      errSpan.textContent = 'Failed';
+      errSpan.title = p.err;
+      errSpan.style.cssText = 'font-size:11px;color:#ef4444;font-weight:600';
+      rightDiv.appendChild(errSpan);
+    }
+
+    var delBtn = document.createElement('button');
+    delBtn.className = 'bsm del';
+    delBtn.style.cssText = 'padding:4px 8px;font-size:12px;line-height:1';
+    delBtn.textContent = '✕';
+    delBtn.title = 'Remove';
+    (function (itemRef) {
+      delBtn.addEventListener('click', function () {
+        removeCompPhoto(itemRef.id);
+      });
+    })(p);
+    rightDiv.appendChild(delBtn);
+
+    card.appendChild(rightDiv);
+    queueCompPhoto.appendChild(card);
+  });
+}
+
+// Photo Compression Runner
+if (btnCompPhotoRun) {
+  btnCompPhotoRun.addEventListener('click', async function () {
+    if (isCompressingPhotos) return;
+    var pendingItems = compPhotoList.filter(function (p) {
+      return p.status === 'pending' || p.status === 'done';
+    });
+    if (!pendingItems.length) return;
+
+    isCompressingPhotos = true;
+    btnCompPhotoRun.disabled = true;
+    var origBtnText = btnCompPhotoRun.innerHTML;
+
+    var q = 0.80;
+    var scaleFactor = 1.0;
+    var maxDimension = 99999;
+
+    if (compPhotoPreset === 'balanced') {
+      q = 0.80;
+      scaleFactor = 1.0;
+      maxDimension = 2560;
+    } else if (compPhotoPreset === 'compact') {
+      q = 0.65;
+      scaleFactor = 0.80;
+      maxDimension = 1920;
+    } else if (compPhotoPreset === 'lossless') {
+      q = 0.92;
+      scaleFactor = 1.0;
+      maxDimension = 99999;
+    } else if (compPhotoPreset === 'custom') {
+      q = Math.max(0.2, Math.min(0.95, (Number(compQRng.value) || 80) / 100));
+      scaleFactor = compPhotoScale;
+    }
+
+    var chosenFmt = compOutFmt ? compOutFmt.value : 'auto';
+
+    for (var i = 0; i < pendingItems.length; i++) {
+      var item = pendingItems[i];
+      item.status = 'compressing';
+      renderCompPhotoUI();
+      btnCompPhotoRun.innerHTML = '<span class="spin">⏳</span> Compressing ' + (i + 1) + '/' + pendingItems.length + '...';
+
+      try {
+        var bmp = await fileToBitmap(item.file);
+        var srcW = bmp.width;
+        var srcH = bmp.height;
+
+        var targetW = Math.max(1, Math.round(srcW * scaleFactor));
+        var targetH = Math.max(1, Math.round(srcH * scaleFactor));
+
+        if (targetW > maxDimension || targetH > maxDimension) {
+          var sc = Math.min(maxDimension / targetW, maxDimension / targetH);
+          targetW = Math.max(1, Math.round(targetW * sc));
+          targetH = Math.max(1, Math.round(targetH * sc));
+        }
+
+        var canvas = document.createElement('canvas');
+        canvas.width = targetW;
+        canvas.height = targetH;
+        var ctx = canvas.getContext('2d');
+
+        var targetMime = 'image/webp';
+        var ext = 'webp';
+        var origExt = (item.name.split('.').pop() || '').toLowerCase();
+
+        if (chosenFmt === 'webp') {
+          targetMime = 'image/webp';
+          ext = 'webp';
+        } else if (chosenFmt === 'jpeg') {
+          targetMime = 'image/jpeg';
+          ext = 'jpg';
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, targetW, targetH);
+        } else if (chosenFmt === 'keep') {
+          if (origExt === 'png') {
+            targetMime = 'image/png';
+            ext = 'png';
+          } else if (origExt === 'jpg' || origExt === 'jpeg') {
+            targetMime = 'image/jpeg';
+            ext = 'jpg';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, targetW, targetH);
+          } else {
+            targetMime = 'image/webp';
+            ext = 'webp';
+          }
+        } else {
+          targetMime = 'image/webp';
+          ext = 'webp';
+        }
+
+        ctx.drawImage(bmp, 0, 0, targetW, targetH);
+        if (bmp.close) bmp.close();
+
+        var compressedBlob = await new Promise(function (resolve, reject) {
+          canvas.toBlob(function (b) {
+            if (b) resolve(b);
+            else reject(new Error('Canvas compression failed'));
+          }, targetMime, q);
+        });
+
+        if (item.blobUrl) URL.revokeObjectURL(item.blobUrl);
+        item.compressedBlob = compressedBlob;
+        item.blobUrl = URL.createObjectURL(compressedBlob);
+        item.compressedSize = compressedBlob.size;
+        item.savedPct = Math.max(0, Math.round(((item.size - compressedBlob.size) / item.size) * 100));
+        var baseName = item.name.replace(/\.[^.]+$/, '');
+        item.downloadName = baseName + '_compressed.' + ext;
+        item.status = 'done';
+      } catch (err) {
+        console.error('Photo compression error for', item.name, err);
+        item.status = 'error';
+        item.err = err.message || 'Compression failed';
+      }
+    }
+
+    isCompressingPhotos = false;
+    btnCompPhotoRun.innerHTML = origBtnText;
+    renderCompPhotoUI();
+  });
+}
+
+
+// ── Video Compression Engine ──
+var dzCompVid = document.getElementById('dz-comp-vid');
+var fiCompVid = document.getElementById('fi-comp-vid');
+var btnCompVidBrowse = document.getElementById('btn-comp-vid-browse');
+var compVidWorkspace = document.getElementById('comp-vid-workspace');
+var btnCompVidChange = document.getElementById('btn-comp-vid-change');
+var compVideo = document.getElementById('comp-video');
+var cvInfoName = document.getElementById('cv-info-name');
+var cvInfoSize = document.getElementById('cv-info-size');
+var cvInfoDur = document.getElementById('cv-info-dur');
+var cvInfoRes = document.getElementById('cv-info-res');
+var selCompVidPreset = document.getElementById('sel-comp-vid-preset');
+var compVidCustomGrp = document.getElementById('comp-vid-custom-grp');
+var selCompVidRes = document.getElementById('sel-comp-vid-res');
+var selCompVidBitrate = document.getElementById('sel-comp-vid-bitrate');
+var selCompVidFmt = document.getElementById('sel-comp-vid-fmt');
+var btnCompVidRun = document.getElementById('btn-comp-vid-run');
+var compVidProg = document.getElementById('comp-vid-prog');
+var compVidProgBar = document.getElementById('comp-vid-prog-bar');
+var compVidProgPct = document.getElementById('comp-vid-prog-pct');
+var compVidResultBox = document.getElementById('comp-vid-result-box');
+var cvOrigSz = document.getElementById('cv-orig-sz');
+var cvNewSz = document.getElementById('cv-new-sz');
+var cvSavedBadge = document.getElementById('cv-saved-badge');
+var btnCvDl = document.getElementById('btn-cv-dl');
+
+var compCurrentVidFile = null;
+var compCurrentVidUrl = null;
+var isCompressingVideo = false;
+var compVidRecorder = null;
+var compVidChunks = [];
+var compVidAnimId = null;
+
+if (selCompVidPreset) {
+  selCompVidPreset.addEventListener('change', function () {
+    if (compVidCustomGrp) {
+      compVidCustomGrp.style.display = this.value === 'custom' ? 'block' : 'none';
+    }
+  });
+}
+
+if (btnCompVidBrowse && fiCompVid) {
+  btnCompVidBrowse.addEventListener('click', function (e) {
+    e.stopPropagation();
+    fiCompVid.click();
+  });
+}
+if (dzCompVid && fiCompVid) {
+  dzCompVid.addEventListener('click', function () {
+    fiCompVid.click();
+  });
+  dzCompVid.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    this.style.borderColor = 'var(--brand)';
+  });
+  dzCompVid.addEventListener('dragleave', function () {
+    this.style.borderColor = 'var(--bdr)';
+  });
+  dzCompVid.addEventListener('drop', function (e) {
+    e.preventDefault();
+    this.style.borderColor = 'var(--bdr)';
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+      loadCompVideo(e.dataTransfer.files[0]);
+    }
+  });
+}
+if (btnCompVidChange && fiCompVid) {
+  btnCompVidChange.addEventListener('click', function () {
+    fiCompVid.click();
+  });
+}
+if (fiCompVid) {
+  fiCompVid.addEventListener('change', function () {
+    if (this.files && this.files.length) {
+      loadCompVideo(this.files[0]);
+    }
+  });
+}
+
+function loadCompVideo(file) {
+  if (!file) return;
+  if (compCurrentVidUrl) {
+    URL.revokeObjectURL(compCurrentVidUrl);
+  }
+  compCurrentVidFile = file;
+  compCurrentVidUrl = URL.createObjectURL(file);
+
+  if (cvInfoName) cvInfoName.textContent = file.name;
+  if (cvInfoSize) cvInfoSize.textContent = fmtBytes(file.size);
+  if (cvInfoDur) cvInfoDur.textContent = 'Analyzing...';
+  if (cvInfoRes) cvInfoRes.textContent = 'Analyzing...';
+
+  if (compVidResultBox) compVidResultBox.style.display = 'none';
+  if (compVidProg) compVidProg.style.display = 'none';
+
+  compVideo.src = compCurrentVidUrl;
+  compVideo.load();
+
+  compVideo.onloadedmetadata = function () {
+    var durSec = compVideo.duration;
+    if (cvInfoDur) cvInfoDur.textContent = fmtTime(durSec) + ' (' + Math.round(durSec) + 's)';
+    if (cvInfoRes) cvInfoRes.textContent = compVideo.videoWidth + ' × ' + compVideo.videoHeight;
+
+    if (compVidWorkspace) compVidWorkspace.style.display = 'block';
+    if (dzCompVid) dzCompVid.style.display = 'none';
+    if (btnCompVidRun) btnCompVidRun.disabled = false;
+  };
+
+  compVideo.onerror = function () {
+    alert('Unable to decode video format in this browser.');
+    if (btnCompVidRun) btnCompVidRun.disabled = true;
+  };
+}
+
+if (btnCompVidRun) {
+  btnCompVidRun.addEventListener('click', async function () {
+    if (isCompressingVideo || !compCurrentVidFile || !compVideo.duration) return;
+
+    isCompressingVideo = true;
+    btnCompVidRun.disabled = true;
+    btnCompVidRun.innerHTML = '<span class="spin">⏳</span> Compressing Video...';
+    if (compVidResultBox) compVidResultBox.style.display = 'none';
+    if (compVidProg) compVidProg.style.display = 'block';
+    if (compVidProgBar) compVidProgBar.style.width = '0%';
+    if (compVidProgPct) compVidProgPct.textContent = '0%';
+
+    var preset = selCompVidPreset ? selCompVidPreset.value : 'balanced';
+    var targetBitrate = 1500000;
+    var maxTargetH = 720;
+
+    if (preset === 'balanced') {
+      maxTargetH = 720;
+      targetBitrate = 1500000;
+    } else if (preset === 'high') {
+      maxTargetH = 1080;
+      targetBitrate = 2800000;
+    } else if (preset === 'social') {
+      maxTargetH = 540;
+      targetBitrate = 750000;
+    } else if (preset === 'custom') {
+      var customResVal = selCompVidRes ? selCompVidRes.value : '1';
+      maxTargetH = customResVal === '1' ? 99999 : Number(customResVal) || 720;
+      targetBitrate = Number(selCompVidBitrate.value) || 1500000;
+    }
+
+    var origW = compVideo.videoWidth || 640;
+    var origH = compVideo.videoHeight || 360;
+
+    var scale = 1;
+    if (origH > maxTargetH) {
+      scale = maxTargetH / origH;
+    }
+    var targetW = Math.round(origW * scale);
+    var targetH = Math.round(origH * scale);
+
+    if (targetW % 2 !== 0) targetW -= 1;
+    if (targetH % 2 !== 0) targetH -= 1;
+    targetW = Math.max(2, targetW);
+    targetH = Math.max(2, targetH);
+
+    var canvas = document.createElement('canvas');
+    canvas.width = targetW;
+    canvas.height = targetH;
+    var ctx = canvas.getContext('2d');
+
+    var canvasStream = null;
+    if (typeof canvas.captureStream === 'function') {
+      canvasStream = canvas.captureStream(30);
+    }
+
+    if (!canvasStream) {
+      alert('MediaStream capture is not supported in this browser.');
+      isCompressingVideo = false;
+      btnCompVidRun.disabled = false;
+      btnCompVidRun.innerHTML = '🗜️ Compress Video Now';
+      return;
+    }
+
+    var audioTrack = null;
+    try {
+      var vidStream = (typeof compVideo.captureStream === 'function') ? compVideo.captureStream() :
+                      (typeof compVideo.mozCaptureStream === 'function') ? compVideo.mozCaptureStream() : null;
+      if (vidStream && vidStream.getAudioTracks && vidStream.getAudioTracks().length > 0) {
+        audioTrack = vidStream.getAudioTracks()[0];
+      }
+    } catch (e) {
+      console.warn('Audio capture bypassed:', e);
+    }
+
+    var combinedTracks = [canvasStream.getVideoTracks()[0]];
+    if (audioTrack) {
+      combinedTracks.push(audioTrack);
+    }
+    var combinedStream = new MediaStream(combinedTracks);
+
+    var wantMp4 = selCompVidFmt && selCompVidFmt.value === 'mp4';
+    var mimeType = '';
+    var ext = 'webm';
+
+    if (wantMp4 && window.MediaRecorder && MediaRecorder.isTypeSupported('video/mp4;codecs=avc1,mp4a.40.2')) {
+      mimeType = 'video/mp4;codecs=avc1,mp4a.40.2';
+      ext = 'mp4';
+    } else if (wantMp4 && window.MediaRecorder && MediaRecorder.isTypeSupported('video/mp4')) {
+      mimeType = 'video/mp4';
+      ext = 'mp4';
+    } else if (audioTrack && window.MediaRecorder && MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')) {
+      mimeType = 'video/webm;codecs=vp9,opus';
+      ext = 'webm';
+    } else if (audioTrack && window.MediaRecorder && MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus')) {
+      mimeType = 'video/webm;codecs=vp8,opus';
+      ext = 'webm';
+    } else if (window.MediaRecorder && MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
+      mimeType = 'video/webm;codecs=vp8';
+      ext = 'webm';
+    } else if (window.MediaRecorder && MediaRecorder.isTypeSupported('video/webm')) {
+      mimeType = 'video/webm';
+      ext = 'webm';
+    }
+
+    var recOptions = {
+      videoBitsPerSecond: targetBitrate
+    };
+    if (mimeType) recOptions.mimeType = mimeType;
+    if (audioTrack) recOptions.audioBitsPerSecond = 128000;
+
+    compVidChunks = [];
+    try {
+      compVidRecorder = new MediaRecorder(combinedStream, recOptions);
+    } catch (recErr) {
+      console.warn('MediaRecorder with bitrates failed, retrying default:', recErr);
+      compVidRecorder = new MediaRecorder(combinedStream);
+    }
+
+    compVidRecorder.ondataavailable = function (e) {
+      if (e.data && e.data.size > 0) {
+        compVidChunks.push(e.data);
+      }
+    };
+
+    var finishCompression = function () {
+      if (!isCompressingVideo) return;
+      isCompressingVideo = false;
+      if (compVidAnimId) cancelAnimationFrame(compVidAnimId);
+      compVideo.pause();
+
+      if (compVidRecorder && compVidRecorder.state !== 'inactive') {
+        try { compVidRecorder.requestData(); } catch (e) {}
+        compVidRecorder.stop();
+      }
+    };
+
+    compVidRecorder.onstop = function () {
+      btnCompVidRun.disabled = false;
+      btnCompVidRun.innerHTML = '🗜️ Compress Video Now';
+      if (compVidProg) compVidProg.style.display = 'none';
+
+      if (!compVidChunks.length) {
+        alert('Compression finished but no video stream data was captured.');
+        return;
+      }
+
+      var finalBlob = new Blob(compVidChunks, { type: mimeType || 'video/webm' });
+      var origSize = compCurrentVidFile.size;
+      var newSize = finalBlob.size;
+      var savedPct = Math.max(0, Math.round(((origSize - newSize) / origSize) * 100));
+
+      if (cvOrigSz) cvOrigSz.textContent = fmtBytes(origSize);
+      if (cvNewSz) cvNewSz.textContent = fmtBytes(newSize);
+      if (cvSavedBadge) {
+        if (savedPct > 0) {
+          cvSavedBadge.textContent = '-' + savedPct + '% Saved';
+          cvSavedBadge.style.background = 'var(--em)';
+          cvSavedBadge.style.color = '#000';
+        } else {
+          cvSavedBadge.textContent = 'Optimized';
+          cvSavedBadge.style.background = 'rgba(255,255,255,0.2)';
+          cvSavedBadge.style.color = '#fff';
+        }
+      }
+
+      var baseName = compCurrentVidFile.name.replace(/\.[^.]+$/, '');
+      if (btnCvDl) {
+        btnCvDl.href = URL.createObjectURL(finalBlob);
+        btnCvDl.download = baseName + '_compressed.' + ext;
+      }
+      if (compVidResultBox) compVidResultBox.style.display = 'block';
+    };
+
+    compVideo.currentTime = 0;
+    compVideo.muted = true;
+
+    var onPlayReady = function () {
+      compVidRecorder.start(200);
+
+      var drawLoop = function () {
+        if (!isCompressingVideo) return;
+        ctx.drawImage(compVideo, 0, 0, targetW, targetH);
+        var cur = compVideo.currentTime;
+        var dur = compVideo.duration || 1;
+        var pct = Math.min(100, Math.max(0, Math.round((cur / dur) * 100)));
+        if (compVidProgBar) compVidProgBar.style.width = pct + '%';
+        if (compVidProgPct) compVidProgPct.textContent = pct + '%';
+
+        if (cur >= dur - 0.05 || compVideo.ended) {
+          finishCompression();
+        } else {
+          compVidAnimId = requestAnimationFrame(drawLoop);
+        }
+      };
+      compVidAnimId = requestAnimationFrame(drawLoop);
+    };
+
+    try {
+      await compVideo.play();
+      onPlayReady();
+    } catch (playErr) {
+      console.warn('Programmatic play blocked:', playErr);
+      compVideo.muted = true;
+      try {
+        await compVideo.play();
+        onPlayReady();
+      } catch (err2) {
+        alert('Could not start video stream rendering: ' + err2.message);
+        isCompressingVideo = false;
+        btnCompVidRun.disabled = false;
+        btnCompVidRun.innerHTML = '🗜️ Compress Video Now';
+        if (compVidProg) compVidProg.style.display = 'none';
+      }
+    }
+  });
+}
 
 // ── INIT ──
 renderSettings();

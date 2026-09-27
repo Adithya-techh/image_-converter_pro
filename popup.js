@@ -388,6 +388,10 @@ btnExpandTab.addEventListener('click', function () { openStudioTab(''); });
 document.getElementById('pop-tab-conv').addEventListener('click', function () { openStudioTab('converter'); });
 document.getElementById('pop-tab-pdf').addEventListener('click', function () { openStudioTab('pdf'); });
 document.getElementById('pop-tab-vid').addEventListener('click', function () { openStudioTab('video'); });
+var popTabComp = document.getElementById('pop-tab-comp');
+if (popTabComp) {
+  popTabComp.addEventListener('click', function () { openStudioTab('compress'); });
+}
 
 render();
 
