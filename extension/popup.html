@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Converter Pro</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070719;--card:rgba(255,255,255,.04);--card-h:rgba(255,255,255,.07);
+  --bdr:rgba(255,255,255,.09);--brand:#5b72ff;--brandl:#818cf8;
+  --em:#10b981;--rd:#ef4444;--am:#f59e0b;--tx:#f1f5f9;--txm:#64748b;--txf:#334155;
+}
+body{
+  width:500px;max-height:580px;background:var(--bg);color:var(--tx);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  margin:0;padding:14px;overflow-x:hidden;overflow-y:auto;user-select:none;
+}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:999px}
+
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--bdr)}
+.logo-grp{display:flex;align-items:center;gap:8px}
+.logo-icon{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,var(--brand),#a855f7);display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 0 12px rgba(91,114,255,.4)}
+.logo-title{font-size:13px;font-weight:800;letter-spacing:-.02em;color:#fff}
+.btn-expand{
+  display:inline-flex;align-items:center;gap:5px;background:rgba(91,114,255,.15);border:1px solid rgba(91,114,255,.3);
+  color:var(--brandl);font-size:11px;font-weight:600;padding:5px 11px;border-radius:7px;cursor:pointer;transition:all .2s;
+}
+.btn-expand:hover{background:rgba(91,114,255,.25);color:#fff;transform:translateY(-1px)}
+
+/* Dropzone */
+.dropzone{
+  border:2px dashed var(--bdr);border-radius:14px;padding:18px 12px;text-align:center;
+  cursor:pointer;background:var(--card);transition:all .25s;margin-bottom:12px;
+}
+.dropzone:hover,.dropzone.over{border-color:rgba(91,114,255,.65);background:rgba(91,114,255,.07)}
+.dz-ico{font-size:24px;margin-bottom:4px}
+.dz-title{font-size:12px;font-weight:700;color:#fff;margin-bottom:2px}
+.dz-sub{font-size:10px;color:var(--txm)}
+
+/* Controls */
+.controls{background:var(--card);border:1px solid var(--bdr);border-radius:12px;padding:10px 12px;margin-bottom:12px}
+.ctrl-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:center}
+.ctrl-lbl{font-size:10px;font-weight:600;color:var(--txm);margin-bottom:4px;display:flex;justify-content:space-between}
+.ctrl-lbl span{color:var(--brandl);font-weight:700}
+select,input[type=range]{width:100%;font-family:inherit}
+select{
+  background:rgba(255,255,255,.06);border:1px solid var(--bdr);border-radius:8px;
+  color:#fff;padding:6px 8px;font-size:11px;outline:none;
+}
+select option{background:#0e0e26;color:#fff}
+input[type=range]{accent-color:var(--brand);cursor:pointer}
+
+/* Stats / Action bar */
+.action-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
+.stats-info{font-size:11px;color:var(--txm)}
+.stats-info strong{color:#fff}
+.stats-info .saved-txt{color:var(--em);margin-left:4px}
+.action-btns{display:flex;gap:6px}
+.btn-sm{
+  font-size:11px;font-weight:600;padding:5px 10px;border-radius:7px;border:1px solid var(--bdr);
+  background:var(--card);color:var(--txm);cursor:pointer;transition:all .2s;
+}
+.btn-sm:hover{background:var(--card-h);color:#fff}
+.btn-sm.del:hover{background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.3);color:#fca5a5}
+.btn-sm.dl{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.3);color:#6ee7b7}
+.btn-sm.dl:hover{background:rgba(16,185,129,.25);color:#fff}
+
+/* Main convert button */
+.btn-convert{
+  width:100%;background:linear-gradient(135deg,var(--brand),#7c3aed);color:#fff;border:none;
+  border-radius:10px;padding:10px;font-size:12px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 18px rgba(91,114,255,.3);
+  transition:all .2s;margin-bottom:12px;
+}
+.btn-convert:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 24px rgba(91,114,255,.45)}
+.btn-convert:disabled{opacity:.35;cursor:not-allowed}
+
+/* Queue */
+.queue-wrap{max-height:210px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.q-card{
+  background:var(--card);border:1px solid var(--bdr);border-radius:10px;padding:8px;
+  display:flex;align-items:center;gap:10px;transition:border-color .2s;
+}
+.q-card.done{border-color:rgba(16,185,129,.3)}.q-card.error{border-color:rgba(239,68,68,.3)}
+.q-thumb{width:42px;height:42px;border-radius:6px;background:rgba(0,0,0,.3);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.q-thumb img{width:100%;height:100%;object-fit:cover}
+.q-thumb-ph{font-size:16px;opacity:.3}
+.q-info{flex:1;min-width:0}
+.q-name{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff;margin-bottom:2px}
+.q-meta{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--txm)}
+.q-st{font-weight:700;padding:1px 5px;border-radius:4px}
+.st-idle{background:rgba(100,116,139,.18);color:#94a3b8}
+.st-conv{background:rgba(91,114,255,.18);color:var(--brandl)}
+.st-done{background:rgba(16,185,129,.18);color:#6ee7b7}
+.st-err{background:rgba(239,68,68,.18);color:#fca5a5}
+.q-actions{display:flex;align-items:center;gap:4px}
+.q-btn{
+  background:var(--card);border:1px solid var(--bdr);border-radius:6px;color:var(--txm);
+  padding:4px 7px;font-size:10px;cursor:pointer;transition:all .2s;
+}
+.q-btn:hover{background:var(--card-h);color:#fff}
+.q-btn.dl{background:rgba(91,114,255,.15);border-color:rgba(91,114,255,.3);color:var(--brandl)}
+.q-btn.rm:hover{background:rgba(239,68,68,.2);color:#fca5a5}
+
+/* Footer */
+.footer{
+  padding-top:8px;border-top:1px solid var(--bdr);display:flex;align-items:center;
+  justify-content:space-between;font-size:10px;color:var(--txm);
+}
+.footer-badge{display:flex;align-items:center;gap:4px}
+.author{font-weight:700;background:linear-gradient(135deg,#818cf8,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.link-gh{color:var(--brandl);text-decoration:none}
+.link-gh:hover{text-decoration:underline;color:#fff}
+.spin{display:inline-block;animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo-grp">
+    <div class="logo-icon">🖼️</div>
+    <div class="logo-title">Image Converter Pro</div>
+  </div>
+  <button class="btn-expand" id="btn-expand-tab" title="Open Full 3D Presentation Website in New Tab">
+    <span>Full Studio</span> ↗
+  </button>
+</div>
+
+<!-- Studio Quick Switcher -->
+<div style="display:flex;gap:4px;margin-bottom:12px">
+  <button class="btn-sm" id="pop-tab-conv" style="flex:1;text-align:center;font-size:9.5px;padding:5px 4px;background:rgba(91,114,255,.2);color:#fff">🖼️ Convert</button>
+  <button class="btn-sm" id="pop-tab-pdf" style="flex:1;text-align:center;font-size:9.5px;padding:5px 4px">📄 To PDF</button>
+  <button class="btn-sm" id="pop-tab-vid" style="flex:1;text-align:center;font-size:9.5px;padding:5px 4px">🎬 Trimmer</button>
+  <button class="btn-sm" id="pop-tab-comp" style="flex:1;text-align:center;font-size:9.5px;padding:5px 4px">🗜️ Compress</button>
+</div>
+
+<!-- Dropzone -->
+<div class="dropzone" id="dz">
+  <div class="dz-ico">📁</div>
+  <div class="dz-title">Drop images or click to browse</div>
+  <div class="dz-sub">HEIC · JPG · PNG · WebP · AVIF · GIF · BMP</div>
+</div>
+<input type="file" id="file-input" multiple accept=".heic,.heif,.jpg,.jpeg,.png,.webp,.avif,.gif,.bmp" style="display:none">
+
+<!-- Controls -->
+<div class="controls">
+  <div class="ctrl-row">
+    <div>
+      <div class="ctrl-lbl">Target Format</div>
+      <select id="sel-fmt">
+        <option value="jpeg">JPG / JPEG (Best compatibility)</option>
+        <option value="png">PNG (Lossless)</option>
+        <option value="webp">WebP (Smallest web size)</option>
+        <option value="avif">AVIF (Ultra high compression)</option>
+        <option value="gif">GIF (Single frame)</option>
+        <option value="bmp">BMP (Bitmap)</option>
+      </select>
+    </div>
+    <div id="q-box">
+      <div class="ctrl-lbl">Quality <span id="q-disp">90%</span></div>
+      <input type="range" id="rng-q" min="1" max="100" value="90">
+    </div>
+  </div>
+</div>
+
+<!-- Stats / Action Bar -->
+<div class="action-bar">
+  <div class="stats-info">
+    <span id="stat-count">0 files</span>
+    <span id="stat-saved" class="saved-txt"></span>
+  </div>
+  <div class="action-btns">
+    <button class="btn-sm dl" id="btn-dl-all" style="display:none">⬇ ZIP All</button>
+    <button class="btn-sm del" id="btn-clr-all" style="display:none">Clear</button>
+  </div>
+</div>
+
+<!-- Convert Button -->
+<button class="btn-convert" id="btn-conv" disabled>✦ Convert Images</button>
+
+<!-- Queue List -->
+<div class="queue-wrap" id="queue"></div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-badge">
+    <span>Created by <strong class="author">Adithya</strong></span>
+  </div>
+  <a href="https://adithya-techh.github.io/image_-converter_pro/" target="_blank" class="link-gh">
+    Live Web Version ↗
+  </a>
+</div>
+
+<!-- Local offline libraries -->
+<script src="lib/jszip.min.js"></script>
+<script src="lib/heic2any.min.js"></script>
+<!-- Extension popup logic -->
+<script src="popup.js"></script>
+
+</body>
+</html>

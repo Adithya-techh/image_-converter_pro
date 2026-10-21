@@ -19,17 +19,17 @@ Experience the live app here:
 
 ## 🧩 Use as a Google Chrome Extension
 
-You can load this repository directly into Google Chrome as an extension:
+You can load the standalone extension directly into Google Chrome:
 
 1. Open Google Chrome and navigate to:
    `chrome://extensions`
 2. Enable **Developer mode** using the toggle in the top-right corner.
 3. Click the **Load unpacked** button in the top-left corner.
-4. Select the project folder:
-   `C:\Develop\image_ converter_pro`
+4. Select the `extension` folder inside this project:
+   `C:\Develop\image_ converter_pro\extension`
 5. The **Image Converter Pro** icon will appear in your Chrome toolbar!
    - Click the toolbar icon anytime to convert images in a sleek popup window.
-   - Click **"Expand to Full Tab ↗"** inside the popup to launch the full 3D interactive experience.
+   - Click **"Full Studio ↗"** inside the popup to launch the full 3D interactive experience.
 
 ---
 

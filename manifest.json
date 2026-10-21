@@ -1,34 +1,16 @@
 {
-  "manifest_version": 3,
-  "name": "Image Converter Pro - HEIC, WebP, JPG, PNG",
-  "version": "1.0.0",
-  "description": "100% private, client-side batch image converter with 3D UI. Convert HEIC, WebP, AVIF, PNG, JPG, GIF, BMP.",
-  "author": "Adithya",
-  "action": {
-    "default_popup": "popup.html",
-    "default_title": "Image Converter Pro",
-    "default_icon": {
-      "16": "icons/icon16.png",
-      "48": "icons/icon48.png",
-      "128": "icons/icon128.png"
-    }
-  },
-  "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
-  },
-  "web_accessible_resources": [
+  "name": "Image Converter Pro",
+  "short_name": "ImageConverter",
+  "description": "100% private, zero-server batch image converter, compressor, PDF compiler, and video trimmer.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#070719",
+  "theme_color": "#5b72ff",
+  "icons": [
     {
-      "resources": [
-        "index.html",
-        "lib/three.min.js",
-        "lib/jszip.min.js",
-        "lib/heic2any.min.js",
-        "lib/jspdf.umd.min.js",
-        "icons/*"
-      ],
-      "matches": ["<all_urls>"]
+      "src": "icons/icon128.png",
+      "sizes": "128x128",
+      "type": "image/png"
     }
   ]
 }
